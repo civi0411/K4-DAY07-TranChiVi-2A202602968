@@ -13,7 +13,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from src.chunking import FixedSizeChunker, HeadingChunker, RecursiveChunker, SentenceChunker
+from src.chunking import HeadingChunker
 from src.embeddings import _mock_embed
 from src.models import Document
 from src.store import EmbeddingStore
@@ -177,64 +177,56 @@ def run_benchmark():
     embedder = PureSemanticEmbedder(dim=128)
     print(f"Backend Embedder: {embedder._backend_name}\n")
 
-    strategies = {
-        "Vĩ (Strategy Lead): HeadingChunker": HeadingChunker(max_section_size=400),
-        "Tuấn (Data Lead): SentenceChunker": SentenceChunker(max_sentences_per_chunk=3),
-        "Khánh (Benchmark Lead): RecursiveChunker": RecursiveChunker(chunk_size=300),
-        "Nhật (Report Lead): FixedSizeChunker": FixedSizeChunker(chunk_size=250, overlap=40),
-    }
+    # Chiến lược riêng của sinh viên Trần Chí Vĩ (Bạn số 3 - Strategy Lead)
+    strategy_name = "HeadingChunker (Trần Chí Vĩ - Strategy Lead)"
+    chunker = HeadingChunker(max_section_size=400)
+
+    store, chunk_count = build_store(raw_docs, chunker, embedder)
 
     report_lines = []
     report_lines.append("================================================================================")
     report_lines.append("        KẾT QUẢ BENCHMARK RETRIEVAL LAB 07 (L3A) — THƯ VIỆN ĐẠI HỌC FPT        ")
     report_lines.append("================================================================================\n")
+    report_lines.append(f"Sinh viên: Trần Chí Vĩ (MSSV: 2A202602968)")
+    report_lines.append(f"Vai trò: Bạn số 3 (Strategy Lead - Trưởng ban Chiến lược)")
+    report_lines.append(f"Chiến lược phụ trách: {strategy_name}")
+    report_lines.append(f"Tổng số chunks nạp vào store: {chunk_count}")
     report_lines.append(f"Backend Embedder: {embedder._backend_name}\n")
 
-    overall_results = {}
-    for strat_name, chunker in strategies.items():
-        store, chunk_count = build_store(raw_docs, chunker, embedder)
-        strat_scores = []
-        details = []
+    details = []
+    strat_scores = []
+    for q in BENCHMARK_QUERIES:
+        res = evaluate_query(store, q, use_filter=True)
+        strat_scores.append(res["points"])
+        details.append(res)
 
-        for q in BENCHMARK_QUERIES:
-            res = evaluate_query(store, q, use_filter=True)
-            strat_scores.append(res["points"])
-            details.append(res)
-
-        total_score = sum(strat_scores)
-        overall_results[strat_name] = {
-            "chunk_count": chunk_count,
-            "total_points": total_score,
-            "details": details,
-        }
+    total_score = sum(strat_scores)
 
     # Summary table
-    report_lines.append(f"{'Chiến lược':<42} | {'Số Chunks':<10} | {'Điểm (/10)':<10} | {'Đánh giá'}")
-    report_lines.append("-" * 85)
-    for s_name, res in overall_results.items():
-        report_lines.append(f"{s_name:<42} | {res['chunk_count']:<10} | {res['total_points']}/10{'':<6} | {'Xuất sắc' if res['total_points']>=9 else ('Tốt' if res['total_points']>=7 else 'Trung bình')}")
-    report_lines.append("\n" + "=" * 85 + "\n")
+    report_lines.append(f"{'Chiến lược':<48} | {'Số Chunks':<10} | {'Điểm (/10)':<10} | {'Đánh giá'}")
+    report_lines.append("-" * 88)
+    evaluation_text = "Xuất sắc" if total_score >= 9 else ("Tốt" if total_score >= 7 else "Trung bình")
+    report_lines.append(f"{strategy_name:<48} | {chunk_count:<10} | {total_score}/10{'':<6} | {evaluation_text}")
+    report_lines.append("\n" + "=" * 88 + "\n")
 
-    # Detailed results per strategy
-    for s_name, res in overall_results.items():
-        report_lines.append(f"### CHI TIẾT CHIẾN LƯỢC: {s_name} (Tổng chunks: {res['chunk_count']})")
-        for d in res["details"]:
-            q_id = d["query_id"]
-            top1 = d["results"][0] if d["results"] else {}
-            content_preview = top1.get("content", "").replace("\n", " ")[:120]
-            report_lines.append(f"  Câu {q_id}: {d['query']}")
-            report_lines.append(f"    - Filter: {d['filter_used']}")
-            report_lines.append(f"    - Top-1 Doc: {d['top1_doc']} (score={d['top1_score']:.3f})")
-            report_lines.append(f"    - Content preview: {content_preview}...")
-            report_lines.append(f"    - Gold in top-3: {d['gold_in_top3']} | Content matched: {d['content_matches']} | Điểm: {d['points']}/2")
-        report_lines.append("-" * 85)
+    # Detailed results
+    report_lines.append(f"### CHI TIẾT KẾT QUẢ TRUY XUẤT 5 CÂU HỎI BENCHMARK:")
+    for d in details:
+        q_id = d["query_id"]
+        top1 = d["results"][0] if d["results"] else {}
+        content_preview = top1.get("content", "").replace("\n", " ")[:120]
+        report_lines.append(f"  Câu {q_id}: {d['query']}")
+        report_lines.append(f"    - Filter: {d['filter_used']}")
+        report_lines.append(f"    - Top-1 Doc: {d['top1_doc']} (score={d['top1_score']:.3f})")
+        report_lines.append(f"    - Content preview: {content_preview}...")
+        report_lines.append(f"    - Gold in top-3: {d['gold_in_top3']} | Content matched: {d['content_matches']} | Điểm: {d['points']}/2")
+    report_lines.append("-" * 88)
 
     # A/B Test for Query 2 (Hạn ngạch mượn: student vs faculty)
     report_lines.append("\n### BẰNG CHỨNG THỰC NGHIỆM A/B: METADATA FILTERING TRÊN CÂU HỎI 2")
     q2 = BENCHMARK_QUERIES[1]
-    h_store, _ = build_store(raw_docs, strategies["Vĩ (Strategy Lead): HeadingChunker"], embedder)
-    res_filtered = evaluate_query(h_store, q2, use_filter=True)
-    res_unfiltered = evaluate_query(h_store, q2, use_filter=False)
+    res_filtered = evaluate_query(store, q2, use_filter=True)
+    res_unfiltered = evaluate_query(store, q2, use_filter=False)
 
     report_lines.append(f"Câu hỏi: \"{q2['query']}\"")
     report_lines.append("\n[1] KHI CÓ FILTER (metadata_filter={'audience': 'student'}):")

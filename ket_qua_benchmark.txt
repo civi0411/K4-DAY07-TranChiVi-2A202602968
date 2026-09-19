@@ -2,143 +2,63 @@
         KẾT QUẢ BENCHMARK RETRIEVAL LAB 07 (L3A) — THƯ VIỆN ĐẠI HỌC FPT        
 ================================================================================
 
+Sinh viên: Trần Chí Vĩ (MSSV: 2A202602968)
+Vai trò: Bạn số 3 (Strategy Lead - Trưởng ban Chiến lược)
+Chiến lược phụ trách: HeadingChunker (Trần Chí Vĩ - Strategy Lead)
+Tổng số chunks nạp vào store: 32
 Backend Embedder: Pure-Python Semantic Feature Hashing (128-dim)
 
-Chiến lược                                 | Số Chunks  | Điểm (/10) | Đánh giá
--------------------------------------------------------------------------------------
-Vĩ (Strategy Lead): HeadingChunker         | 32         | 8/10       | Tốt
-Tuấn (Data Lead): SentenceChunker          | 21         | 8/10       | Tốt
-Khánh (Benchmark Lead): RecursiveChunker   | 34         | 9/10       | Xuất sắc
-Nhật (Report Lead): FixedSizeChunker       | 38         | 8/10       | Tốt
+Chiến lược                                       | Số Chunks  | Điểm (/10) | Đánh giá
+----------------------------------------------------------------------------------------
+HeadingChunker (Trần Chí Vĩ - Strategy Lead)     | 32         | 9/10       | Xuất sắc
 
-=====================================================================================
+========================================================================================
 
-### CHI TIẾT CHIẾN LƯỢC: Vĩ (Strategy Lead): HeadingChunker (Tổng chunks: 32)
+### CHI TIẾT KẾT QUẢ TRUY XUẤT 5 CÂU HỎI BENCHMARK:
   Câu 1: Sinh viên được mượn tối đa bao nhiêu tài liệu về nhà và thời hạn mượn sách tham khảo tiếng Việt, ngoại văn là bao lâu?
     - Filter: None
-    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.495)
-    - Content preview: ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chính quy được mượn tối đa 10 tài liệu cùng lúc về nhà để phục vụ...
-    - Gold in top-3: True | Content matched: False | Điểm: 1/2
+    - Top-1 Doc: fpt-muon-sach-giang-vien (score=0.501)
+    - Content preview: ## Mục 2 — Thời hạn mượn và chính sách ưu tiên Thời hạn mượn sách chuyên ngành và sách tham khảo dành cho giảng viên là ...
+    - Gold in top-3: True | Content matched: True | Điểm: 1/2
   Câu 2: Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc?
     - Filter: {'audience': 'student'}
-    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.419)
-    - Content preview: ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chính quy được mượn tối đa 10 tài liệu cùng lúc về nhà để phục vụ...
-    - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 3: Mức phí phạt trả sách quá hạn mỗi ngày là bao nhiêu và có những phương thức thanh toán trực tuyến nào?
-    - Filter: None
-    - Top-1 Doc: fpt-phi-thu-vien (score=0.340)
-    - Content preview: ## Mục 2 — Phương thức thanh toán trực tuyến Nhà trường triển khai các hình thức thanh toán không dùng tiền mặt nhằm tạo...
-    - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 4: Thời gian sử dụng phòng học nhóm tối đa là bao lâu mỗi ca và sau bao nhiêu phút không đến nhận phòng thì ca đặt sẽ bị hủy?
-    - Filter: None
-    - Top-1 Doc: fpt-phong-hoc-nhom (score=0.585)
-    - Content preview: ## Mục 2 — Thời gian sử dụng và quy định hủy ca Thời gian sử dụng tối đa 2 giờ / ca (1 ca / nhóm / ngày) để đảm bảo công...
-    - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 5: Mỗi cuốn sách được phép gia hạn tối đa mấy lượt và bạn đọc có thể thực hiện gia hạn qua những kênh nào?
-    - Filter: None
-    - Top-1 Doc: fpt-gia-han-tai-lieu (score=0.481)
-    - Content preview: ## Mục 1 — Quy định về số lượt và điều kiện gia hạn Bạn đọc đang mượn sách có nhu cầu tiếp tục sử dụng có thể đề nghị gi...
-    - Gold in top-3: True | Content matched: False | Điểm: 1/2
--------------------------------------------------------------------------------------
-### CHI TIẾT CHIẾN LƯỢC: Tuấn (Data Lead): SentenceChunker (Tổng chunks: 21)
-  Câu 1: Sinh viên được mượn tối đa bao nhiêu tài liệu về nhà và thời hạn mượn sách tham khảo tiếng Việt, ngoại văn là bao lâu?
-    - Filter: None
-    - Top-1 Doc: fpt-muon-sach-giang-vien (score=0.549)
-    - Content preview: # Chính sách mượn trả tài liệu cho cán bộ giảng viên tại Thư viện FPT  ## Mục 1 — Hạn ngạch mượn phục vụ công tác và ngh...
-    - Gold in top-3: True | Content matched: False | Điểm: 1/2
-  Câu 2: Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc?
-    - Filter: {'audience': 'student'}
-    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.410)
-    - Content preview: # Quy định mượn trả tài liệu cho sinh viên tại Thư viện FPT  ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chín...
-    - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 3: Mức phí phạt trả sách quá hạn mỗi ngày là bao nhiêu và có những phương thức thanh toán trực tuyến nào?
-    - Filter: None
-    - Top-1 Doc: fpt-phi-thu-vien (score=0.479)
-    - Content preview: # Quy định phí thư viện và hướng dẫn thanh toán phí phạt quá hạn FPT  ## Mục 1 — Mức phí phạt trả sách quá hạn Bạn đọc t...
-    - Gold in top-3: True | Content matched: False | Điểm: 1/2
-  Câu 4: Thời gian sử dụng phòng học nhóm tối đa là bao lâu mỗi ca và sau bao nhiêu phút không đến nhận phòng thì ca đặt sẽ bị hủy?
-    - Filter: None
-    - Top-1 Doc: fpt-phong-hoc-nhom (score=0.554)
-    - Content preview: ## Mục 2 — Thời gian sử dụng và quy định hủy ca Thời gian sử dụng tối đa 2 giờ / ca (1 ca / nhóm / ngày) để đảm bảo công...
-    - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 5: Mỗi cuốn sách được phép gia hạn tối đa mấy lượt và bạn đọc có thể thực hiện gia hạn qua những kênh nào?
-    - Filter: None
-    - Top-1 Doc: fpt-gia-han-tai-lieu (score=0.493)
-    - Content preview: # Hướng dẫn các phương thức gia hạn sách tại Thư viện FPT  ## Mục 1 — Quy định về số lượt và điều kiện gia hạn Bạn đọc đ...
-    - Gold in top-3: True | Content matched: True | Điểm: 2/2
--------------------------------------------------------------------------------------
-### CHI TIẾT CHIẾN LƯỢC: Khánh (Benchmark Lead): RecursiveChunker (Tổng chunks: 34)
-  Câu 1: Sinh viên được mượn tối đa bao nhiêu tài liệu về nhà và thời hạn mượn sách tham khảo tiếng Việt, ngoại văn là bao lâu?
-    - Filter: None
-    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.496)
-    - Content preview: ## Mục 3 — Thời hạn mượn từng loại tài liệu Thời hạn mượn tài liệu về nhà được quy định cụ thể như sau: 1. Sách tham khả...
-    - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 2: Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc?
-    - Filter: {'audience': 'student'}
-    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.419)
+    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.395)
     - Content preview: ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chính quy được mượn tối đa 10 tài liệu cùng lúc về nhà để phục vụ...
     - Gold in top-3: True | Content matched: True | Điểm: 2/2
   Câu 3: Mức phí phạt trả sách quá hạn mỗi ngày là bao nhiêu và có những phương thức thanh toán trực tuyến nào?
     - Filter: None
-    - Top-1 Doc: fpt-phi-thu-vien (score=0.475)
+    - Top-1 Doc: fpt-phi-thu-vien (score=0.368)
     - Content preview: ## Mục 1 — Mức phí phạt trả sách quá hạn Bạn đọc trả tài liệu trễ hạn so với ngày quy định sẽ phải nộp phí phạt quá hạn....
     - Gold in top-3: True | Content matched: True | Điểm: 2/2
   Câu 4: Thời gian sử dụng phòng học nhóm tối đa là bao lâu mỗi ca và sau bao nhiêu phút không đến nhận phòng thì ca đặt sẽ bị hủy?
     - Filter: None
-    - Top-1 Doc: fpt-phong-hoc-nhom (score=0.539)
-    - Content preview: Thời gian sử dụng tối đa 2 giờ / ca (1 ca / nhóm / ngày) để đảm bảo công bằng cho tất cả các nhóm khác có nhu cầu. Sau 1...
+    - Top-1 Doc: fpt-phong-hoc-nhom (score=0.452)
+    - Content preview: ## Mục 2 — Thời gian sử dụng và quy định hủy ca Thời gian sử dụng tối đa 2 giờ / ca (1 ca / nhóm / ngày) để đảm bảo công...
     - Gold in top-3: True | Content matched: True | Điểm: 2/2
   Câu 5: Mỗi cuốn sách được phép gia hạn tối đa mấy lượt và bạn đọc có thể thực hiện gia hạn qua những kênh nào?
     - Filter: None
-    - Top-1 Doc: fpt-gia-han-tai-lieu (score=0.474)
-    - Content preview: Bạn đọc đang mượn sách có nhu cầu tiếp tục sử dụng có thể đề nghị gia hạn tài liệu trước khi sách đến hạn trả. Mỗi cuốn ...
-    - Gold in top-3: True | Content matched: False | Điểm: 1/2
--------------------------------------------------------------------------------------
-### CHI TIẾT CHIẾN LƯỢC: Nhật (Report Lead): FixedSizeChunker (Tổng chunks: 38)
-  Câu 1: Sinh viên được mượn tối đa bao nhiêu tài liệu về nhà và thời hạn mượn sách tham khảo tiếng Việt, ngoại văn là bao lâu?
-    - Filter: None
-    - Top-1 Doc: fpt-muon-sach-giang-vien (score=0.551)
-    - Content preview: úc về nhà hoặc phòng làm việc nhằm phục vụ công tác giảng dạy, biên soạn bài giảng và nghiên cứu khoa học.  ## Mục 2 — T...
-    - Gold in top-3: True | Content matched: False | Điểm: 1/2
-  Câu 2: Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc?
-    - Filter: {'audience': 'student'}
-    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.478)
-    - Content preview: # Quy định mượn trả tài liệu cho sinh viên tại Thư viện FPT  ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chín...
+    - Top-1 Doc: fpt-gia-han-tai-lieu (score=0.412)
+    - Content preview: ## Mục 1 — Quy định về số lượt và điều kiện gia hạn Bạn đọc đang mượn sách có nhu cầu tiếp tục sử dụng có thể đề nghị gi...
     - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 3: Mức phí phạt trả sách quá hạn mỗi ngày là bao nhiêu và có những phương thức thanh toán trực tuyến nào?
-    - Filter: None
-    - Top-1 Doc: fpt-phi-thu-vien (score=0.391)
-    - Content preview: # Quy định phí thư viện và hướng dẫn thanh toán phí phạt quá hạn FPT  ## Mục 1 — Mức phí phạt trả sách quá hạn Bạn đọc t...
-    - Gold in top-3: True | Content matched: False | Điểm: 1/2
-  Câu 4: Thời gian sử dụng phòng học nhóm tối đa là bao lâu mỗi ca và sau bao nhiêu phút không đến nhận phòng thì ca đặt sẽ bị hủy?
-    - Filter: None
-    - Top-1 Doc: fpt-phong-hoc-nhom (score=0.463)
-    - Content preview: sử dụng tối đa 2 giờ / ca (1 ca / nhóm / ngày) để đảm bảo công bằng cho tất cả các nhóm khác có nhu cầu. Sau 15 phút kể ...
-    - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 5: Mỗi cuốn sách được phép gia hạn tối đa mấy lượt và bạn đọc có thể thực hiện gia hạn qua những kênh nào?
-    - Filter: None
-    - Top-1 Doc: fpt-gia-han-tai-lieu (score=0.507)
-    - Content preview: ến hạn trả. Mỗi cuốn sách được phép gia hạn tối đa 4 lượt (nếu chưa có người đặt trước). Sách đang trong tình trạng bị b...
-    - Gold in top-3: True | Content matched: True | Điểm: 2/2
--------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 
 ### BẰNG CHỨNG THỰC NGHIỆM A/B: METADATA FILTERING TRÊN CÂU HỎI 2
 Câu hỏi: "Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc?"
 
 [1] KHI CÓ FILTER (metadata_filter={'audience': 'student'}):
-  Rank 1: doc_id=fpt-muon-sach-sinh-vien, audience=student, score=0.419
+  Rank 1: doc_id=fpt-muon-sach-sinh-vien, audience=student, score=0.395
          Preview: ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chính quy được mượn tối đa 10 tài liệu cùng l...
-  Rank 2: doc_id=fpt-phi-thu-vien, audience=student, score=0.281
-         Preview: ## Mục 2 — Phương thức thanh toán trực tuyến Nhà trường triển khai các hình thức thanh toán không dù...
-  Rank 3: doc_id=fpt-muon-sach-sinh-vien, audience=student, score=0.276
+  Rank 2: doc_id=fpt-phi-thu-vien, audience=student, score=0.220
+         Preview: ## Mục 1 — Mức phí phạt trả sách quá hạn Bạn đọc trả tài liệu trễ hạn so với ngày quy định sẽ phải n...
+  Rank 3: doc_id=fpt-muon-sach-sinh-vien, audience=student, score=0.179
          Preview: # Quy định mượn trả tài liệu cho sinh viên tại Thư viện FPT...
 
 [2] KHI KHÔNG CÓ FILTER (Unfiltered):
-  Rank 1: doc_id=fpt-muon-sach-sinh-vien, audience=student, score=0.419
+  Rank 1: doc_id=fpt-muon-sach-sinh-vien, audience=student, score=0.395
          Preview: ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chính quy được mượn tối đa 10 tài liệu cùng l...
-  Rank 2: doc_id=fpt-phi-thu-vien, audience=student, score=0.281
-         Preview: ## Mục 2 — Phương thức thanh toán trực tuyến Nhà trường triển khai các hình thức thanh toán không dù...
-  Rank 3: doc_id=fpt-muon-sach-sinh-vien, audience=student, score=0.276
-         Preview: # Quy định mượn trả tài liệu cho sinh viên tại Thư viện FPT...
+  Rank 2: doc_id=fpt-muon-sach-giang-vien, audience=faculty, score=0.275
+         Preview: ## Mục 1 — Hạn ngạch mượn phục vụ công tác và nghiên cứu Cán bộ và giảng viên cơ hữu của nhà trường ...
+  Rank 3: doc_id=fpt-noi-quy-thu-vien, audience=all, score=0.246
+         Preview: ## Mục 3 — Trách nhiệm bảo vệ tài sản và xử lý vi phạm Nghiêm cấm hành vi xé trang, viết vẽ, làm rác...
 
 Kết luận A/B: Khi không bật filter, tài liệu fpt-muon-sach-giang-vien (audience: faculty, 20 cuốn) có thể cạnh tranh trực tiếp ở top-k với tài liệu sinh viên (10 cuốn), khiến agent dễ nhầm lẫn đối tượng. Khi áp dụng filter audience='student', kết quả được cô lập chính xác 100% vào tài liệu sinh viên.
