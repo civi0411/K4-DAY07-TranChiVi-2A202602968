@@ -1,144 +1,144 @@
 ================================================================================
-                     KẾT QUẢ BENCHMARK RETRIEVAL LAB 07 (L3A)                  
+        KẾT QUẢ BENCHMARK RETRIEVAL LAB 07 (L3A) — THƯ VIỆN ĐẠI HỌC FPT        
 ================================================================================
 
 Backend Embedder: Pure-Python Semantic Feature Hashing (128-dim)
 
 Chiến lược                                 | Số Chunks  | Điểm (/10) | Đánh giá
 -------------------------------------------------------------------------------------
-Member 3: HeadingChunker (TranChiVi)       | 28         | 7/10       | Tốt
-Member 1: SentenceChunker                  | 20         | 8/10       | Tốt
-Member 2: RecursiveChunker                 | 33         | 7/10       | Tốt
-Member 4: FixedSizeChunker                 | 35         | 6/10       | Trung bình
+Member 3: HeadingChunker (TranChiVi)       | 32         | 9/10       | Xuất sắc
+Member 1: SentenceChunker                  | 21         | 7/10       | Tốt
+Member 2: RecursiveChunker                 | 34         | 8/10       | Tốt
+Member 4: FixedSizeChunker                 | 38         | 8/10       | Tốt
 
 =====================================================================================
 
-### CHI TIẾT CHIẾN LƯỢC: Member 3: HeadingChunker (TranChiVi) (Tổng chunks: 28)
-  Câu 1: Sinh viên có học lực bình thường phải đăng ký tối thiểu bao nhiêu tín chỉ và rút học phần trước tuần thứ mấy?
+### CHI TIẾT CHIẾN LƯỢC: Member 3: HeadingChunker (TranChiVi) (Tổng chunks: 32)
+  Câu 1: Sinh viên được mượn tối đa bao nhiêu tài liệu về nhà và thời hạn mượn sách tham khảo tiếng Việt, ngoại văn là bao lâu?
     - Filter: None
-    - Top-1 Doc: dang-ky-hoc-phan (score=0.529)
-    - Content preview: ## Điều 1 — Khối lượng học tập tối thiểu và tối đa Sinh viên có học lực bình thường phải đăng ký khối lượng học tập tối ...
+    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.411)
+    - Content preview: ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chính quy được mượn tối đa 10 tài liệu cùng lúc về nhà để phục vụ...
     - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 2: Thời hạn đóng học phí học kỳ là khi nào và đối tượng nào được miễn 100% học phí?
-    - Filter: None
-    - Top-1 Doc: hoc-phi-va-mien-giam (score=0.445)
-    - Content preview: ## Điều 1 — Thời hạn nộp học phí học kỳ Sinh viên có trách nhiệm hoàn thành nghĩa vụ đóng học phí trước 17h00 thứ Sáu củ...
-    - Gold in top-3: True | Content matched: False | Điểm: 1/2
-  Câu 3: Điều kiện về GPA và điểm rèn luyện để đạt học bổng khuyến khích loại Xuất sắc là gì?
-    - Filter: None
-    - Top-1 Doc: hoc-bong-khuyen-khich (score=0.405)
-    - Content preview: ## Điều 2 — Các định mức phân loại học bổng Quỹ học bổng được phân bổ theo 3 mức căn cứ vào điểm trung bình học kỳ (GPA)...
-    - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 4: Thời hạn mượn sách thư viện tối đa là bao nhiêu ngày và được mượn cùng lúc bao nhiêu cuốn?
+  Câu 2: Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc?
     - Filter: {'audience': 'student'}
-    - Top-1 Doc: muon-tra-thu-vien-sinh-vien (score=0.479)
-    - Content preview: ## Điều 1 — Hạn mức và thời gian mượn tài liệu Sinh viên hệ chính quy được mượn về nhà tối đa 5 cuốn sách giáo trình hoặ...
+    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.392)
+    - Content preview: ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chính quy được mượn tối đa 10 tài liệu cùng lúc về nhà để phục vụ...
     - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 5: Thủ tục và lệ phí xin phúc khảo bài thi kết thúc học phần như thế nào, trường hợp nào được hoàn tiền?
+  Câu 3: Mức phí phạt trả sách quá hạn mỗi ngày là bao nhiêu và có những phương thức thanh toán trực tuyến nào?
     - Filter: None
-    - Top-1 Doc: phuc-khao-diem-thi (score=0.294)
-    - Content preview: # Quy trình phúc khảo điểm thi kết thúc học phần...
-    - Gold in top-3: True | Content matched: False | Điểm: 0/2
+    - Top-1 Doc: fpt-phi-thu-vien (score=0.354)
+    - Content preview: ## Mục 1 — Mức phí phạt trả sách quá hạn Bạn đọc trả tài liệu trễ hạn so với ngày quy định sẽ phải nộp phí phạt quá hạn....
+    - Gold in top-3: True | Content matched: True | Điểm: 2/2
+  Câu 4: Thời gian sử dụng phòng học nhóm tối đa là bao lâu mỗi ca và sau bao nhiêu phút không đến nhận phòng thì ca đặt sẽ bị hủy?
+    - Filter: None
+    - Top-1 Doc: fpt-phong-hoc-nhom (score=0.632)
+    - Content preview: ## Mục 2 — Thời gian sử dụng và quy định hủy ca Thời gian sử dụng tối đa 2 giờ / ca (1 ca / nhóm / ngày) để đảm bảo công...
+    - Gold in top-3: True | Content matched: True | Điểm: 2/2
+  Câu 5: Mỗi cuốn sách được phép gia hạn tối đa mấy lượt và bạn đọc có thể thực hiện gia hạn qua những kênh nào?
+    - Filter: None
+    - Top-1 Doc: fpt-gia-han-tai-lieu (score=0.580)
+    - Content preview: ## Mục 1 — Quy định về số lượt và điều kiện gia hạn Bạn đọc đang mượn sách có nhu cầu tiếp tục sử dụng có thể đề nghị gi...
+    - Gold in top-3: True | Content matched: False | Điểm: 1/2
 -------------------------------------------------------------------------------------
-### CHI TIẾT CHIẾN LƯỢC: Member 1: SentenceChunker (Tổng chunks: 20)
-  Câu 1: Sinh viên có học lực bình thường phải đăng ký tối thiểu bao nhiêu tín chỉ và rút học phần trước tuần thứ mấy?
+### CHI TIẾT CHIẾN LƯỢC: Member 1: SentenceChunker (Tổng chunks: 21)
+  Câu 1: Sinh viên được mượn tối đa bao nhiêu tài liệu về nhà và thời hạn mượn sách tham khảo tiếng Việt, ngoại văn là bao lâu?
     - Filter: None
-    - Top-1 Doc: dang-ky-hoc-phan (score=0.626)
-    - Content preview: # Quy định đăng ký và rút học phần  ## Điều 1 — Khối lượng học tập tối thiểu và tối đa Sinh viên có học lực bình thường ...
-    - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 2: Thời hạn đóng học phí học kỳ là khi nào và đối tượng nào được miễn 100% học phí?
-    - Filter: None
-    - Top-1 Doc: hoc-phi-va-mien-giam (score=0.396)
-    - Content preview: # Quy định thu nộp học phí và chính sách miễn giảm  ## Điều 1 — Thời hạn nộp học phí học kỳ Sinh viên có trách nhiệm hoà...
+    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.352)
+    - Content preview: # Quy định mượn trả tài liệu cho sinh viên tại Thư viện FPT  ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chín...
     - Gold in top-3: True | Content matched: False | Điểm: 1/2
-  Câu 3: Điều kiện về GPA và điểm rèn luyện để đạt học bổng khuyến khích loại Xuất sắc là gì?
-    - Filter: None
-    - Top-1 Doc: hoc-bong-khuyen-khich (score=0.391)
-    - Content preview: Không bị kỷ luật từ hình thức khiển trách trở lên trong kỳ học. ## Điều 2 — Các định mức phân loại học bổng Quỹ học bổng...
-    - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 4: Thời hạn mượn sách thư viện tối đa là bao nhiêu ngày và được mượn cùng lúc bao nhiêu cuốn?
+  Câu 2: Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc?
     - Filter: {'audience': 'student'}
-    - Top-1 Doc: muon-tra-thu-vien-sinh-vien (score=0.496)
-    - Content preview: # Quy định mượn trả tài liệu thư viện dành cho sinh viên  ## Điều 1 — Hạn mức và thời gian mượn tài liệu Sinh viên hệ ch...
+    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.222)
+    - Content preview: # Quy định mượn trả tài liệu cho sinh viên tại Thư viện FPT  ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chín...
     - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 5: Thủ tục và lệ phí xin phúc khảo bài thi kết thúc học phần như thế nào, trường hợp nào được hoàn tiền?
+  Câu 3: Mức phí phạt trả sách quá hạn mỗi ngày là bao nhiêu và có những phương thức thanh toán trực tuyến nào?
     - Filter: None
-    - Top-1 Doc: hoc-phi-va-mien-giam (score=0.218)
-    - Content preview: # Quy định thu nộp học phí và chính sách miễn giảm  ## Điều 1 — Thời hạn nộp học phí học kỳ Sinh viên có trách nhiệm hoà...
-    - Gold in top-3: True | Content matched: True | Điểm: 1/2
+    - Top-1 Doc: fpt-phi-thu-vien (score=0.452)
+    - Content preview: # Quy định phí thư viện và hướng dẫn thanh toán phí phạt quá hạn FPT  ## Mục 1 — Mức phí phạt trả sách quá hạn Bạn đọc t...
+    - Gold in top-3: True | Content matched: False | Điểm: 1/2
+  Câu 4: Thời gian sử dụng phòng học nhóm tối đa là bao lâu mỗi ca và sau bao nhiêu phút không đến nhận phòng thì ca đặt sẽ bị hủy?
+    - Filter: None
+    - Top-1 Doc: fpt-phong-hoc-nhom (score=0.599)
+    - Content preview: ## Mục 2 — Thời gian sử dụng và quy định hủy ca Thời gian sử dụng tối đa 2 giờ / ca (1 ca / nhóm / ngày) để đảm bảo công...
+    - Gold in top-3: True | Content matched: True | Điểm: 2/2
+  Câu 5: Mỗi cuốn sách được phép gia hạn tối đa mấy lượt và bạn đọc có thể thực hiện gia hạn qua những kênh nào?
+    - Filter: None
+    - Top-1 Doc: fpt-gia-han-tai-lieu (score=0.586)
+    - Content preview: # Hướng dẫn các phương thức gia hạn sách tại Thư viện FPT  ## Mục 1 — Quy định về số lượt và điều kiện gia hạn Bạn đọc đ...
+    - Gold in top-3: True | Content matched: False | Điểm: 1/2
 -------------------------------------------------------------------------------------
-### CHI TIẾT CHIẾN LƯỢC: Member 2: RecursiveChunker (Tổng chunks: 33)
-  Câu 1: Sinh viên có học lực bình thường phải đăng ký tối thiểu bao nhiêu tín chỉ và rút học phần trước tuần thứ mấy?
+### CHI TIẾT CHIẾN LƯỢC: Member 2: RecursiveChunker (Tổng chunks: 34)
+  Câu 1: Sinh viên được mượn tối đa bao nhiêu tài liệu về nhà và thời hạn mượn sách tham khảo tiếng Việt, ngoại văn là bao lâu?
     - Filter: None
-    - Top-1 Doc: dang-ky-hoc-phan (score=0.523)
-    - Content preview: Sinh viên có học lực bình thường phải đăng ký khối lượng học tập tối thiểu là 14 tín chỉ và tối đa là 24 tín chỉ cho mỗi...
+    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.474)
+    - Content preview: ## Mục 3 — Thời hạn mượn từng loại tài liệu Thời hạn mượn tài liệu về nhà được quy định cụ thể như sau: 1. Sách tham khả...
     - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 2: Thời hạn đóng học phí học kỳ là khi nào và đối tượng nào được miễn 100% học phí?
-    - Filter: None
-    - Top-1 Doc: hoc-phi-va-mien-giam (score=0.445)
-    - Content preview: ## Điều 1 — Thời hạn nộp học phí học kỳ Sinh viên có trách nhiệm hoàn thành nghĩa vụ đóng học phí trước 17h00 thứ Sáu củ...
-    - Gold in top-3: True | Content matched: False | Điểm: 1/2
-  Câu 3: Điều kiện về GPA và điểm rèn luyện để đạt học bổng khuyến khích loại Xuất sắc là gì?
-    - Filter: None
-    - Top-1 Doc: hoc-bong-khuyen-khich (score=0.399)
-    - Content preview: ## Điều 2 — Các định mức phân loại học bổng Quỹ học bổng được phân bổ theo 3 mức căn cứ vào điểm trung bình học kỳ (GPA)...
-    - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 4: Thời hạn mượn sách thư viện tối đa là bao nhiêu ngày và được mượn cùng lúc bao nhiêu cuốn?
+  Câu 2: Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc?
     - Filter: {'audience': 'student'}
-    - Top-1 Doc: muon-tra-thu-vien-sinh-vien (score=0.486)
-    - Content preview: Sinh viên hệ chính quy được mượn về nhà tối đa 5 cuốn sách giáo trình hoặc tài liệu tham khảo trong cùng một thời điểm. ...
+    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.392)
+    - Content preview: ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chính quy được mượn tối đa 10 tài liệu cùng lúc về nhà để phục vụ...
     - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 5: Thủ tục và lệ phí xin phúc khảo bài thi kết thúc học phần như thế nào, trường hợp nào được hoàn tiền?
+  Câu 3: Mức phí phạt trả sách quá hạn mỗi ngày là bao nhiêu và có những phương thức thanh toán trực tuyến nào?
     - Filter: None
-    - Top-1 Doc: dang-ky-hoc-phan (score=0.252)
-    - Content preview: Sinh viên được phép xin rút học phần trước khi kết thúc tuần thứ 4 của học kỳ chính. Học phần được rút hợp lệ sẽ được gh...
-    - Gold in top-3: True | Content matched: False | Điểm: 0/2
+    - Top-1 Doc: fpt-phi-thu-vien (score=0.474)
+    - Content preview: ## Mục 1 — Mức phí phạt trả sách quá hạn Bạn đọc trả tài liệu trễ hạn so với ngày quy định sẽ phải nộp phí phạt quá hạn....
+    - Gold in top-3: True | Content matched: False | Điểm: 1/2
+  Câu 4: Thời gian sử dụng phòng học nhóm tối đa là bao lâu mỗi ca và sau bao nhiêu phút không đến nhận phòng thì ca đặt sẽ bị hủy?
+    - Filter: None
+    - Top-1 Doc: fpt-phong-hoc-nhom (score=0.626)
+    - Content preview: Thời gian sử dụng tối đa 2 giờ / ca (1 ca / nhóm / ngày) để đảm bảo công bằng cho tất cả các nhóm khác có nhu cầu. Sau 1...
+    - Gold in top-3: True | Content matched: True | Điểm: 2/2
+  Câu 5: Mỗi cuốn sách được phép gia hạn tối đa mấy lượt và bạn đọc có thể thực hiện gia hạn qua những kênh nào?
+    - Filter: None
+    - Top-1 Doc: fpt-gia-han-tai-lieu (score=0.573)
+    - Content preview: Bạn đọc đang mượn sách có nhu cầu tiếp tục sử dụng có thể đề nghị gia hạn tài liệu trước khi sách đến hạn trả. Mỗi cuốn ...
+    - Gold in top-3: True | Content matched: False | Điểm: 1/2
 -------------------------------------------------------------------------------------
-### CHI TIẾT CHIẾN LƯỢC: Member 4: FixedSizeChunker (Tổng chunks: 35)
-  Câu 1: Sinh viên có học lực bình thường phải đăng ký tối thiểu bao nhiêu tín chỉ và rút học phần trước tuần thứ mấy?
+### CHI TIẾT CHIẾN LƯỢC: Member 4: FixedSizeChunker (Tổng chunks: 38)
+  Câu 1: Sinh viên được mượn tối đa bao nhiêu tài liệu về nhà và thời hạn mượn sách tham khảo tiếng Việt, ngoại văn là bao lâu?
     - Filter: None
-    - Top-1 Doc: dang-ky-hoc-phan (score=0.677)
-    - Content preview: # Quy định đăng ký và rút học phần  ## Điều 1 — Khối lượng học tập tối thiểu và tối đa Sinh viên có học lực bình thường ...
-    - Gold in top-3: True | Content matched: False | Điểm: 1/2
-  Câu 2: Thời hạn đóng học phí học kỳ là khi nào và đối tượng nào được miễn 100% học phí?
-    - Filter: None
-    - Top-1 Doc: hoc-phi-va-mien-giam (score=0.469)
-    - Content preview: # Quy định thu nộp học phí và chính sách miễn giảm  ## Điều 1 — Thời hạn nộp học phí học kỳ Sinh viên có trách nhiệm hoà...
-    - Gold in top-3: True | Content matched: False | Điểm: 1/2
-  Câu 3: Điều kiện về GPA và điểm rèn luyện để đạt học bổng khuyến khích loại Xuất sắc là gì?
-    - Filter: None
-    - Top-1 Doc: hoc-bong-khuyen-khich (score=0.416)
-    - Content preview: c.  ## Điều 2 — Các định mức phân loại học bổng Quỹ học bổng được phân bổ theo 3 mức căn cứ vào điểm trung bình học kỳ (...
+    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.410)
+    - Content preview: # Quy định mượn trả tài liệu cho sinh viên tại Thư viện FPT  ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chín...
     - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 4: Thời hạn mượn sách thư viện tối đa là bao nhiêu ngày và được mượn cùng lúc bao nhiêu cuốn?
+  Câu 2: Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc?
     - Filter: {'audience': 'student'}
-    - Top-1 Doc: muon-tra-thu-vien-sinh-vien (score=0.495)
-    - Content preview: # Quy định mượn trả tài liệu thư viện dành cho sinh viên  ## Điều 1 — Hạn mức và thời gian mượn tài liệu Sinh viên hệ ch...
+    - Top-1 Doc: fpt-muon-sach-sinh-vien (score=0.397)
+    - Content preview: # Quy định mượn trả tài liệu cho sinh viên tại Thư viện FPT  ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chín...
     - Gold in top-3: True | Content matched: True | Điểm: 2/2
-  Câu 5: Thủ tục và lệ phí xin phúc khảo bài thi kết thúc học phần như thế nào, trường hợp nào được hoàn tiền?
+  Câu 3: Mức phí phạt trả sách quá hạn mỗi ngày là bao nhiêu và có những phương thức thanh toán trực tuyến nào?
     - Filter: None
-    - Top-1 Doc: dang-ky-hoc-phan (score=0.314)
-    - Content preview: ên được phép xin rút học phần trước khi kết thúc tuần thứ 4 của học kỳ chính. Học phần được rút hợp lệ sẽ được ghi điểm ...
-    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+    - Top-1 Doc: fpt-phi-thu-vien (score=0.464)
+    - Content preview: # Quy định phí thư viện và hướng dẫn thanh toán phí phạt quá hạn FPT  ## Mục 1 — Mức phí phạt trả sách quá hạn Bạn đọc t...
+    - Gold in top-3: True | Content matched: False | Điểm: 1/2
+  Câu 4: Thời gian sử dụng phòng học nhóm tối đa là bao lâu mỗi ca và sau bao nhiêu phút không đến nhận phòng thì ca đặt sẽ bị hủy?
+    - Filter: None
+    - Top-1 Doc: fpt-phong-hoc-nhom (score=0.597)
+    - Content preview: sử dụng tối đa 2 giờ / ca (1 ca / nhóm / ngày) để đảm bảo công bằng cho tất cả các nhóm khác có nhu cầu. Sau 15 phút kể ...
+    - Gold in top-3: True | Content matched: True | Điểm: 2/2
+  Câu 5: Mỗi cuốn sách được phép gia hạn tối đa mấy lượt và bạn đọc có thể thực hiện gia hạn qua những kênh nào?
+    - Filter: None
+    - Top-1 Doc: fpt-gia-han-tai-lieu (score=0.597)
+    - Content preview: ến hạn trả. Mỗi cuốn sách được phép gia hạn tối đa 4 lượt (nếu chưa có người đặt trước). Sách đang trong tình trạng bị b...
+    - Gold in top-3: True | Content matched: False | Điểm: 1/2
 -------------------------------------------------------------------------------------
 
-### BẰNG CHỨNG THỰC NGHIỆM A/B: METADATA FILTERING TRÊN CÂU HỎI 4
-Câu hỏi: Thời hạn mượn sách thư viện tối đa là bao nhiêu ngày và được mượn cùng lúc bao nhiêu cuốn?
+### BẰNG CHỨNG THỰC NGHIỆM A/B: METADATA FILTERING TRÊN CÂU HỎI 2
+Câu hỏi: "Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc?"
 
 [1] KHI CÓ FILTER (metadata_filter={'audience': 'student'}):
-  Rank 1: doc_id=muon-tra-thu-vien-sinh-vien, audience=student, score=0.479
-         Preview: ## Điều 1 — Hạn mức và thời gian mượn tài liệu Sinh viên hệ chính quy được mượn về nhà tối đa 5 cuốn...
-  Rank 2: doc_id=phuc-khao-diem-thi, audience=student, score=0.342
-         Preview: ## Điều 1 — Thời hạn tiếp nhận đơn đề nghị phúc khảo Sinh viên có thắc mắc về điểm thi kết thúc học ...
-  Rank 3: doc_id=muon-tra-thu-vien-sinh-vien, audience=student, score=0.313
-         Preview: # Quy định mượn trả tài liệu thư viện dành cho sinh viên...
+  Rank 1: doc_id=fpt-muon-sach-sinh-vien, audience=student, score=0.392
+         Preview: ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chính quy được mượn tối đa 10 tài liệu cùng l...
+  Rank 2: doc_id=fpt-muon-sach-sinh-vien, audience=student, score=0.223
+         Preview: ## Mục 3 — Thời hạn mượn từng loại tài liệu Thời hạn mượn tài liệu về nhà được quy định cụ thể như s...
+  Rank 3: doc_id=fpt-phi-thu-vien, audience=student, score=0.153
+         Preview: ## Mục 1 — Mức phí phạt trả sách quá hạn Bạn đọc trả tài liệu trễ hạn so với ngày quy định sẽ phải n...
 
 [2] KHI KHÔNG CÓ FILTER (Unfiltered):
-  Rank 1: doc_id=muon-tra-thu-vien-sinh-vien, audience=student, score=0.479
-         Preview: ## Điều 1 — Hạn mức và thời gian mượn tài liệu Sinh viên hệ chính quy được mượn về nhà tối đa 5 cuốn...
-  Rank 2: doc_id=phuc-khao-diem-thi, audience=student, score=0.342
-         Preview: ## Điều 1 — Thời hạn tiếp nhận đơn đề nghị phúc khảo Sinh viên có thắc mắc về điểm thi kết thúc học ...
-  Rank 3: doc_id=muon-tra-thu-vien-giang-vien, audience=faculty, score=0.320
-         Preview: ## Điều 1 — Hạn mức và thời hạn mượn phục vụ nghiên cứu Cán bộ và giảng viên cơ hữu của nhà trường đ...
+  Rank 1: doc_id=fpt-muon-sach-giang-vien, audience=faculty, score=0.407
+         Preview: ## Mục 1 — Hạn ngạch mượn phục vụ công tác và nghiên cứu Cán bộ và giảng viên cơ hữu của nhà trường ...
+  Rank 2: doc_id=fpt-muon-sach-sinh-vien, audience=student, score=0.392
+         Preview: ## Mục 1 — Hạn ngạch mượn tài liệu về nhà Sinh viên hệ chính quy được mượn tối đa 10 tài liệu cùng l...
+  Rank 3: doc_id=fpt-muon-sach-giang-vien, audience=faculty, score=0.266
+         Preview: ## Mục 2 — Thời hạn mượn và chính sách ưu tiên Thời hạn mượn sách chuyên ngành và sách tham khảo dàn...
 
-Kết luận A/B: Khi không có filter, tài liệu của giảng viên chiếm thứ hạng cao vì có nhiều thuật ngữ thư viện, dẫn đến agent trả lời sai cho sinh viên. Khi bật filter audience='student', 100% kết quả chỉ tập trung vào quy định sinh viên (14 ngày, 5 cuốn).
+Kết luận A/B: Khi không bật filter, tài liệu fpt-muon-sach-giang-vien (audience: faculty, 20 cuốn) có thể cạnh tranh trực tiếp ở top-k với tài liệu sinh viên (10 cuốn), khiến agent dễ nhầm lẫn đối tượng. Khi áp dụng filter audience='student', kết quả được cô lập chính xác 100% vào tài liệu sinh viên.

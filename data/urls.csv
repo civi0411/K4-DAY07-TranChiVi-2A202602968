@@ -1,8 +1,9 @@
 url,doc_id,title,audience,department,category,language,document_version,license_or_permission
-https://vlearn.edu.vn/quy-dinh/dang-ky-hoc-phan,dang-ky-hoc-phan,Quy định đăng ký và rút học phần,student,academic-affairs,registration,vi,2026.1,public-source
-https://vlearn.edu.vn/tai-chinh/hoc-phi-mien-giam,hoc-phi-va-mien-giam,Quy định thu nộp học phí và chính sách miễn giảm,student,finance,tuition,vi,2026.1,public-source
-https://vlearn.edu.vn/cong-tac-sinh-vien/hoc-bong-khuyen-khich,hoc-bong-khuyen-khich,Quy chế xét cấp học bổng khuyến khích học tập,student,student-affairs,scholarship,vi,2026.2,public-source
-https://vlearn.edu.vn/thu-vien/quy-dinh-sinh-vien,muon-tra-thu-vien-sinh-vien,Quy định mượn trả tài liệu thư viện dành cho sinh viên,student,library,library,vi,2026.1,public-source
-https://vlearn.edu.vn/thu-vien/quy-dinh-giang-vien,muon-tra-thu-vien-giang-vien,Quy định mượn trả tài liệu thư viện dành cho cán bộ giảng viên,faculty,library,library,vi,2026.1,public-source
-https://vlearn.edu.vn/ky-tuc-xa/quy-che-noi-tru,ky-tuc-xa-sinh-vien,Quy chế quản lý nội trú ký túc xá sinh viên,student,dormitory,housing,vi,2026.1,public-source
-https://vlearn.edu.vn/khao-thi/quy-trinh-phuc-khao,phuc-khao-diem-thi,Quy trình phúc khảo điểm thi kết thúc học phần,student,testing-quality,examination,vi,2026.1,public-source
+https://library.fpt.edu.vn/Pages/Index/22,fpt-chinh-sach-tai-nguyen-so,Chính sách tiếp cận tài nguyên điện tử và dịch vụ số FPTU,all,library,digital-resource,vi,2025-09-29,public-source
+https://library.fpt.edu.vn/Pages/Index/1,fpt-gia-han-tai-lieu,Hướng dẫn các phương thức gia hạn sách tại Thư viện FPT,all,library,circulation,vi,2021-05-14,public-source
+https://library.fpt.edu.vn/Pages/Index/3,fpt-gio-mo-cua,Thời gian hoạt động và lịch phục vụ mượn trả tại Thư viện FPT,all,library,schedule,vi,2021-05-14,public-source
+https://library.fpt.edu.vn/Pages/Index/9,fpt-muon-sach-giang-vien,Chính sách mượn trả tài liệu cho cán bộ giảng viên tại Thư viện FPT,faculty,library,circulation,vi,2021-05-14,public-source
+https://library.fpt.edu.vn/Pages/Index/9,fpt-muon-sach-sinh-vien,Quy định mượn trả tài liệu cho sinh viên tại Thư viện FPT,student,library,circulation,vi,2021-05-14,public-source
+https://library.fpt.edu.vn/Pages/Index/15,fpt-noi-quy-thu-vien,Nội quy chung bạn đọc tại Thư viện Đại học FPT,all,library,policy,vi,2022-12-12,public-source
+https://library.fpt.edu.vn/Pages/Index/18,fpt-phi-thu-vien,Quy định phí thư viện và hướng dẫn thanh toán phí phạt quá hạn FPT,student,library,fee,vi,2024-04-12,public-source
+https://library.fpt.edu.vn/Pages/Index/17,fpt-phong-hoc-nhom,Quy định đặt và sử dụng phòng học nhóm tại Thư viện FPT,student,library,facility,vi,2023-09-22,public-source

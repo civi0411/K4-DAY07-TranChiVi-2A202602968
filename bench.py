@@ -1,8 +1,7 @@
 """
 Benchmark Script for Lab 07: Data Foundations (K4-L3A)
-Compares chunking strategies on the university regulations corpus.
-Supports pure-Python semantic vectorization (word & sub-word hashing)
-to evaluate real semantic retrieval quality without requiring external API keys.
+Topic: Thư viện Đại học FPT (FPTU Library)
+Compares chunking strategies on the official library regulations corpus.
 """
 
 from __future__ import annotations
@@ -22,8 +21,8 @@ from src.store import EmbeddingStore
 
 class PureSemanticEmbedder:
     """
-    Fast, deterministic semantic embedder using feature hashing (word + 2-gram).
-    Generates normalized 128-dimensional dense vectors preserving word semantics.
+    Deterministic semantic embedder using word + bigram feature hashing.
+    Generates normalized 128-dimensional dense vectors preserving phrase semantics.
     """
 
     def __init__(self, dim: int = 128) -> None:
@@ -33,7 +32,6 @@ class PureSemanticEmbedder:
     def __call__(self, text: str) -> list[float]:
         words = re.findall(r"\w+", text.lower())
         tokens = list(words)
-        # Add word bigrams for better contextual phrase matching
         for i in range(len(words) - 1):
             tokens.append(f"{words[i]}_{words[i+1]}")
 
@@ -51,11 +49,12 @@ class PureSemanticEmbedder:
 
 class HeadingChunker:
     """
-    Chunk Markdown regulations by section headings (e.g. ## Điều 1, ## Điều 2).
-    Keeps section title attached to sub-chunks if section exceeds max_section_size.
+    Chunk Markdown documents by section headings (## Mục 1, ## Mục 2...).
+    If a section exceeds max_section_size, recursively splits while preserving
+    the parent section title (Context Prepending).
     """
 
-    def __init__(self, max_section_size: int = 450) -> None:
+    def __init__(self, max_section_size: int = 400) -> None:
         self.max_section_size = max_section_size
         self._fallback = RecursiveChunker(chunk_size=max_section_size)
 
@@ -63,7 +62,6 @@ class HeadingChunker:
         if not text or not text.strip():
             return []
 
-        # Split at markdown headings (## or #)
         sections = re.split(r"(?m)(?=^#{1,3}\s+)", text.strip())
         chunks: list[str] = []
         for sec in sections:
@@ -85,43 +83,43 @@ class HeadingChunker:
 BENCHMARK_QUERIES = [
     {
         "id": 1,
-        "query": "Sinh viên có học lực bình thường phải đăng ký tối thiểu bao nhiêu tín chỉ và rút học phần trước tuần thứ mấy?",
+        "query": "Sinh viên được mượn tối đa bao nhiêu tài liệu về nhà và thời hạn mượn sách tham khảo tiếng Việt, ngoại văn là bao lâu?",
         "filter": None,
-        "gold_doc": "dang-ky-hoc-phan",
-        "gold_keywords": ["14 tín chỉ", "tuần thứ 4"],
-        "gold_answer": "Sinh viên có học lực bình thường đăng ký tối thiểu 14 tín chỉ (tối đa 24 tín chỉ) và thời hạn rút học phần là trước khi kết thúc tuần thứ 4 của học kỳ.",
+        "gold_doc": "fpt-muon-sach-sinh-vien",
+        "gold_keywords": ["10", "7 ngày", "14 ngày"],
+        "gold_answer": "Sinh viên được mượn tối đa 10 tài liệu cùng lúc về nhà; sách tiếng Việt mượn 7 ngày; sách ngoại văn và song ngữ mượn 14 ngày.",
     },
     {
         "id": 2,
-        "query": "Thời hạn đóng học phí học kỳ là khi nào và đối tượng nào được miễn 100% học phí?",
-        "filter": None,
-        "gold_doc": "hoc-phi-va-mien-giam",
-        "gold_keywords": ["tuần thứ 3", "miễn 100%"],
-        "gold_answer": "Hạn nộp học phí trước 17h00 thứ Sáu của tuần thứ 3 trong học kỳ; sinh viên thuộc hộ nghèo hoặc mồ côi cả cha lẫn mẹ được miễn 100% học phí.",
+        "query": "Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc?",
+        "filter": {"audience": "student"},
+        "gold_doc": "fpt-muon-sach-sinh-vien",
+        "gold_keywords": ["10", "sinh viên"],
+        "gold_answer": "10 tài liệu đối với sinh viên (nếu là cán bộ giảng viên thì được mượn tối đa 20 tài liệu).",
     },
     {
         "id": 3,
-        "query": "Điều kiện về GPA và điểm rèn luyện để đạt học bổng khuyến khích loại Xuất sắc là gì?",
+        "query": "Mức phí phạt trả sách quá hạn mỗi ngày là bao nhiêu và có những phương thức thanh toán trực tuyến nào?",
         "filter": None,
-        "gold_doc": "hoc-bong-khuyen-khich",
-        "gold_keywords": ["3.60", "90"],
-        "gold_answer": "Học bổng Xuất sắc yêu cầu GPA từ 3.60 đến 4.00, điểm rèn luyện từ 90 điểm trở lên, tích lũy tối thiểu 15 tín chỉ và không có môn nào dưới điểm C.",
+        "gold_doc": "fpt-phi-thu-vien",
+        "gold_keywords": ["5.000", "FAP", "DNG"],
+        "gold_answer": "Phí phạt quá hạn là 5.000 VNĐ / tài liệu / ngày; có 2 phương thức thanh toán trực tuyến: qua ví FAP và qua cổng DNG (quét mã QR ngân hàng).",
     },
     {
         "id": 4,
-        "query": "Thời hạn mượn sách thư viện tối đa là bao nhiêu ngày và được mượn cùng lúc bao nhiêu cuốn?",
-        "filter": {"audience": "student"},
-        "gold_doc": "muon-tra-thu-vien-sinh-vien",
-        "gold_keywords": ["5 cuốn", "14 ngày"],
-        "gold_answer": "Sinh viên được mượn tối đa 5 cuốn sách giáo trình/tham khảo trong 14 ngày (gia hạn 1 lần 7 ngày).",
+        "query": "Thời gian sử dụng phòng học nhóm tối đa là bao lâu mỗi ca và sau bao nhiêu phút không đến nhận phòng thì ca đặt sẽ bị hủy?",
+        "filter": None,
+        "gold_doc": "fpt-phong-hoc-nhom",
+        "gold_keywords": ["2 giờ", "15 phút"],
+        "gold_answer": "Thời gian sử dụng tối đa 2 giờ / ca (1 ca / nhóm / ngày); sau 15 phút kể từ giờ bắt đầu nếu nhóm không đến nhận phòng hoặc không đủ người tối thiểu thì ca đặt sẽ tự động bị hủy.",
     },
     {
         "id": 5,
-        "query": "Thủ tục và lệ phí xin phúc khảo bài thi kết thúc học phần như thế nào, trường hợp nào được hoàn tiền?",
+        "query": "Mỗi cuốn sách được phép gia hạn tối đa mấy lượt và bạn đọc có thể thực hiện gia hạn qua những kênh nào?",
         "filter": None,
-        "gold_doc": "phuc-khao-diem-thi",
-        "gold_keywords": ["7 ngày làm việc", "50.000 đồng", "hoàn trả lại 100%"],
-        "gold_answer": "Sinh viên nộp đơn phúc khảo trong 7 ngày làm việc kể từ ngày công bố điểm, lệ phí 50.000 đồng/bài; được hoàn 100% lệ phí nếu kết quả tăng điểm sau phúc khảo.",
+        "gold_doc": "fpt-gia-han-tai-lieu",
+        "gold_keywords": ["4 lượt", "OPAC", "024 6680 5912", "Fanpage"],
+        "gold_answer": "Mỗi cuốn sách được phép gia hạn tối đa 4 lượt (nếu chưa có người đặt trước); gia hạn qua 4 kênh: cổng OPAC trực tuyến, gửi email, gọi điện thoại (024 6680 5912), hoặc nhắn tin qua Fanpage Thư viện FPTU.",
     },
 ]
 
@@ -176,19 +174,14 @@ def evaluate_query(
     gold_doc = query_item["gold_doc"]
     gold_keywords = query_item["gold_keywords"]
 
-    # Check presence of gold doc and content match
     top_doc_ids = [r["metadata"].get("doc_id") for r in results]
     gold_in_top3 = gold_doc in top_doc_ids
     gold_at_top1 = len(top_doc_ids) > 0 and top_doc_ids[0] == gold_doc
 
-    # Check if context contains keywords
     context_text = " ".join([r["content"] for r in results])
     keywords_matched = sum(1 for kw in gold_keywords if kw.lower() in context_text.lower())
     content_matches = keywords_matched == len(gold_keywords)
 
-    # 2 points: gold in top-1 + content contains answer
-    # 1 point: gold in top-2/3 or partial content
-    # 0 points: not retrieved in top-3
     if gold_at_top1 and content_matches:
         score = 2
     elif gold_in_top3 and keywords_matched > 0:
@@ -210,12 +203,12 @@ def evaluate_query(
 
 
 def run_benchmark():
-    data_dir = Path("data/university")
+    data_dir = Path("data/thu-vien")
     raw_docs = load_raw_documents(data_dir)
     print(f"Loaded {len(raw_docs)} raw documents from {data_dir}")
 
     embedder = PureSemanticEmbedder(dim=128)
-    print(f"Using embedder: {embedder._backend_name}\n")
+    print(f"Backend Embedder: {embedder._backend_name}\n")
 
     strategies = {
         "Member 3: HeadingChunker (TranChiVi)": HeadingChunker(max_section_size=400),
@@ -226,7 +219,7 @@ def run_benchmark():
 
     report_lines = []
     report_lines.append("================================================================================")
-    report_lines.append("                     KẾT QUẢ BENCHMARK RETRIEVAL LAB 07 (L3A)                  ")
+    report_lines.append("        KẾT QUẢ BENCHMARK RETRIEVAL LAB 07 (L3A) — THƯ VIỆN ĐẠI HỌC FPT        ")
     report_lines.append("================================================================================\n")
     report_lines.append(f"Backend Embedder: {embedder._backend_name}\n")
 
@@ -269,14 +262,14 @@ def run_benchmark():
             report_lines.append(f"    - Gold in top-3: {d['gold_in_top3']} | Content matched: {d['content_matches']} | Điểm: {d['points']}/2")
         report_lines.append("-" * 85)
 
-    # A/B Test for Query 4 (Library borrowing query: student vs faculty)
-    report_lines.append("\n### BẰNG CHỨNG THỰC NGHIỆM A/B: METADATA FILTERING TRÊN CÂU HỎI 4")
-    q4 = BENCHMARK_QUERIES[3]
+    # A/B Test for Query 2 (Hạn ngạch mượn: student vs faculty)
+    report_lines.append("\n### BẰNG CHỨNG THỰC NGHIỆM A/B: METADATA FILTERING TRÊN CÂU HỎI 2")
+    q2 = BENCHMARK_QUERIES[1]
     h_store, _ = build_store(raw_docs, strategies["Member 3: HeadingChunker (TranChiVi)"], embedder)
-    res_filtered = evaluate_query(h_store, q4, use_filter=True)
-    res_unfiltered = evaluate_query(h_store, q4, use_filter=False)
+    res_filtered = evaluate_query(h_store, q2, use_filter=True)
+    res_unfiltered = evaluate_query(h_store, q2, use_filter=False)
 
-    report_lines.append(f"Câu hỏi: {q4['query']}")
+    report_lines.append(f"Câu hỏi: \"{q2['query']}\"")
     report_lines.append("\n[1] KHI CÓ FILTER (metadata_filter={'audience': 'student'}):")
     for idx, r in enumerate(res_filtered["results"], start=1):
         report_lines.append(f"  Rank {idx}: doc_id={r['metadata'].get('doc_id')}, audience={r['metadata'].get('audience')}, score={r['score']:.3f}")
@@ -287,7 +280,7 @@ def run_benchmark():
         report_lines.append(f"  Rank {idx}: doc_id={r['metadata'].get('doc_id')}, audience={r['metadata'].get('audience')}, score={r['score']:.3f}")
         report_lines.append(f"         Preview: {r['content'].replace(chr(10), ' ')[:100]}...")
 
-    report_lines.append("\nKết luận A/B: Khi không có filter, tài liệu của giảng viên chiếm thứ hạng cao vì có nhiều thuật ngữ thư viện, dẫn đến agent trả lời sai cho sinh viên. Khi bật filter audience='student', 100% kết quả chỉ tập trung vào quy định sinh viên (14 ngày, 5 cuốn).\n")
+    report_lines.append("\nKết luận A/B: Khi không bật filter, tài liệu fpt-muon-sach-giang-vien (audience: faculty, 20 cuốn) có thể cạnh tranh trực tiếp ở top-k với tài liệu sinh viên (10 cuốn), khiến agent dễ nhầm lẫn đối tượng. Khi áp dụng filter audience='student', kết quả được cô lập chính xác 100% vào tài liệu sinh viên.\n")
 
     output_text = "\n".join(report_lines)
     print(output_text)
