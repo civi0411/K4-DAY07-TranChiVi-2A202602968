@@ -7,14 +7,12 @@ Compares chunking strategies on the official library regulations corpus.
 from __future__ import annotations
 
 import math
-import os
 import re
 from collections import Counter
 from pathlib import Path
 from typing import Any
 
 from src.chunking import HeadingChunker
-from src.embeddings import _mock_embed
 from src.models import Document
 from src.store import EmbeddingStore
 
