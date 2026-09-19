@@ -13,7 +13,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from src.chunking import FixedSizeChunker, RecursiveChunker, SentenceChunker
+from src.chunking import FixedSizeChunker, HeadingChunker, RecursiveChunker, SentenceChunker
 from src.embeddings import _mock_embed
 from src.models import Document
 from src.store import EmbeddingStore
@@ -45,39 +45,6 @@ class PureSemanticEmbedder:
 
         norm = math.sqrt(sum(x * x for x in vec)) or 1.0
         return [x / norm for x in vec]
-
-
-class HeadingChunker:
-    """
-    Chunk Markdown documents by section headings (## Mục 1, ## Mục 2...).
-    If a section exceeds max_section_size, recursively splits while preserving
-    the parent section title (Context Prepending).
-    """
-
-    def __init__(self, max_section_size: int = 400) -> None:
-        self.max_section_size = max_section_size
-        self._fallback = RecursiveChunker(chunk_size=max_section_size)
-
-    def chunk(self, text: str) -> list[str]:
-        if not text or not text.strip():
-            return []
-
-        sections = re.split(r"(?m)(?=^#{1,3}\s+)", text.strip())
-        chunks: list[str] = []
-        for sec in sections:
-            sec = sec.strip()
-            if not sec:
-                continue
-            if len(sec) <= self.max_section_size:
-                chunks.append(sec)
-            else:
-                lines = sec.split("\n", 1)
-                header = lines[0].strip()
-                body = lines[1].strip() if len(lines) > 1 else ""
-                sub_chunks = self._fallback.chunk(body)
-                for sc in sub_chunks:
-                    chunks.append(f"{header}\n{sc}")
-        return chunks
 
 
 BENCHMARK_QUERIES = [

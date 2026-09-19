@@ -173,3 +173,38 @@ class ChunkingStrategyComparator:
                 "chunks": chunks,
             }
         return results
+
+
+class HeadingChunker:
+    """
+    Heading / Section Chunker for Markdown documents.
+    Splits text by Markdown headers (e.g. ## Điều 1, ## Mục 2, # Tiêu đề).
+    If a section exceeds max_section_size, recursively splits while preserving
+    the parent heading context via Context Prepending.
+    """
+
+    def __init__(self, max_section_size: int = 400) -> None:
+        self.max_section_size = max_section_size
+        self._fallback = RecursiveChunker(chunk_size=max_section_size)
+
+    def chunk(self, text: str) -> list[str]:
+        if not text or not text.strip():
+            return []
+
+        sections = re.split(r"(?m)(?=^#{1,3}\s+)", text.strip())
+        chunks: list[str] = []
+        for sec in sections:
+            sec = sec.strip()
+            if not sec:
+                continue
+            if len(sec) <= self.max_section_size:
+                chunks.append(sec)
+            else:
+                lines = sec.split("\n", 1)
+                header = lines[0].strip()
+                body = lines[1].strip() if len(lines) > 1 else ""
+                sub_chunks = self._fallback.chunk(body)
+                for sc in sub_chunks:
+                    chunks.append(f"{header}\n{sc}")
+        return chunks
+
