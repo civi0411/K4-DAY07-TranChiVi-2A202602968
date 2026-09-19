@@ -178,10 +178,10 @@ def run_benchmark():
     print(f"Backend Embedder: {embedder._backend_name}\n")
 
     strategies = {
-        "Member 3: HeadingChunker (TranChiVi)": HeadingChunker(max_section_size=400),
-        "Member 1: SentenceChunker": SentenceChunker(max_sentences_per_chunk=3),
-        "Member 2: RecursiveChunker": RecursiveChunker(chunk_size=300),
-        "Member 4: FixedSizeChunker": FixedSizeChunker(chunk_size=250, overlap=40),
+        "Vĩ (Strategy Lead): HeadingChunker": HeadingChunker(max_section_size=400),
+        "Tuấn (Data Lead): SentenceChunker": SentenceChunker(max_sentences_per_chunk=3),
+        "Khánh (Benchmark Lead): RecursiveChunker": RecursiveChunker(chunk_size=300),
+        "Nhật (Report Lead): FixedSizeChunker": FixedSizeChunker(chunk_size=250, overlap=40),
     }
 
     report_lines = []
@@ -232,7 +232,7 @@ def run_benchmark():
     # A/B Test for Query 2 (Hạn ngạch mượn: student vs faculty)
     report_lines.append("\n### BẰNG CHỨNG THỰC NGHIỆM A/B: METADATA FILTERING TRÊN CÂU HỎI 2")
     q2 = BENCHMARK_QUERIES[1]
-    h_store, _ = build_store(raw_docs, strategies["Member 3: HeadingChunker (TranChiVi)"], embedder)
+    h_store, _ = build_store(raw_docs, strategies["Vĩ (Strategy Lead): HeadingChunker"], embedder)
     res_filtered = evaluate_query(h_store, q2, use_filter=True)
     res_unfiltered = evaluate_query(h_store, q2, use_filter=False)
 

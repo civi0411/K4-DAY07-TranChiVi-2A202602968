@@ -1,11 +1,11 @@
 # Báo Cáo Nhóm — Lab 7: Embedding & Vector Store
 
-**Nhóm:** Nhóm L3A-Team01
+**Nhóm:** Nhóm L3A-Team01 (Chủ đề: Dịch vụ & Quy định Đại học - Thư viện FPT)
 **Thành viên:**
-1. [Thành viên 1] — Data Lead (Trưởng ban Dữ liệu)
-2. [Thành viên 2] — Benchmark Lead (Trưởng ban Khảo thí)
+1. Tuấn — Data Lead (Trưởng ban Dữ liệu)
+2. Khánh — Benchmark Lead (Trưởng ban Khảo thí)
 3. Trần Chí Vĩ (TranChiVi - MSSV: 2A202602968) — Strategy Lead (Trưởng ban Chiến lược)
-4. [Thành viên 4] — Report & Demo Lead (Trưởng ban Báo cáo & Thuyết trình)
+4. Nhật — Report & Demo Lead (Trưởng ban Báo cáo & Thuyết trình)
 
 **Ngày:** 19/09/2026
 
@@ -60,25 +60,28 @@
 
 ### Phân tích đường cơ sở (Baseline Analysis)
 
-Chạy `ChunkingStrategyComparator().compare()` trên 3 tài liệu đại diện của Thư viện:
+Vĩ (Strategy Lead) đã chạy `ChunkingStrategyComparator().compare()` kết hợp thuật toán `HeadingChunker` trên 3 tài liệu đại diện của Thư viện FPT và chuyển giao số liệu cho Nhật (Report Lead):
 
-| Tài liệu | Chiến lược (Strategy) | Số lượng Chunk | Độ dài trung bình | Giữ được ngữ cảnh không? |
-|-----------|----------|-------------|------------|-------------------|
-| `fpt-muon-sach-sinh-vien.md` (916 ký tự) | FixedSizeChunker (`fixed_size`, size=200, overlap=20) | 5 | 199.2 | Kém (bị ngắt giữa cụm từ số ngày mượn sách tiếng Việt và ngoại văn) |
-| | SentenceChunker (`by_sentences`, max=3) | 4 | 227.8 | Khá (câu ngữ pháp nguyên vẹn, tách theo mục tốt) |
-| | RecursiveChunker (`recursive`, size=200) | 7 | 129.3 | Trung bình (cắt theo ranh giới dòng, chunk hơi ngắn) |
-| `fpt-phi-thu-vien.md` (901 ký tự) | FixedSizeChunker (`fixed_size`, size=200, overlap=20) | 5 | 196.2 | Kém (cắt đứt cụm từ "5.000 VNĐ / tài liệu / ngày") |
-| | SentenceChunker (`by_sentences`, max=3) | 2 | 449.0 | Tương đối (gộp chung cả mục phí phạt và cổng thanh toán FAP) |
-| | RecursiveChunker (`recursive`, size=200) | 6 | 149.0 | Khá (tách các mục độc lập) |
-| `fpt-phong-hoc-nhom.md` (952 ký tự) | FixedSizeChunker (`fixed_size`, size=200, overlap=20) | 6 | 175.3 | Kém (cắt ngang quy định hủy ca sau 15 phút) |
-| | SentenceChunker (`by_sentences`, max=3) | 2 | 474.5 | Khá (giữ trọn vẹn câu điều kiện) |
-| | RecursiveChunker (`recursive`, size=200) | 8 | 117.6 | Trung bình (chia nhỏ các điều kiện) |
+| Tài liệu | Thành viên phụ trách | Chiến lược (Strategy) | Số lượng Chunk | Độ dài trung bình | Giữ được ngữ cảnh không? |
+|---|---|---|---|---|---|
+| `fpt-muon-sach-sinh-vien.md` (916 ký tự) | Nhật | FixedSizeChunker (`fixed_size`, size=200, overlap=20) | 5 | 199.2 | Kém (bị ngắt giữa cụm từ số ngày mượn sách tiếng Việt và ngoại văn) |
+| | Tuấn | SentenceChunker (`by_sentences`, max=3) | 4 | 227.8 | Khá (câu ngữ pháp nguyên vẹn, tách theo mục tốt) |
+| | Khánh | RecursiveChunker (`recursive`, size=200) | 7 | 129.3 | Trung bình (cắt theo ranh giới dòng, chunk hơi ngắn) |
+| | **Vĩ** | **HeadingChunker** (`heading_section`, size=400) | **4** | **229.0** | **Xuất sắc** (nguyên vẹn từng Mục điều khoản logic) |
+| `fpt-phi-thu-vien.md` (901 ký tự) | Nhật | FixedSizeChunker (`fixed_size`, size=200, overlap=20) | 5 | 196.2 | Kém (cắt đứt cụm từ "5.000 VNĐ / tài liệu / ngày") |
+| | Tuấn | SentenceChunker (`by_sentences`, max=3) | 2 | 449.0 | Tương đối (gộp chung cả mục phí phạt và cổng thanh toán FAP) |
+| | Khánh | RecursiveChunker (`recursive`, size=200) | 6 | 149.0 | Khá (tách các mục độc lập) |
+| | **Vĩ** | **HeadingChunker** (`heading_section`, size=400) | **4** | **225.2** | **Xuất sắc** (tách rành mạch Mục Phí phạt và Mục Cổng thanh toán) |
+| `fpt-phong-hoc-nhom.md` (952 ký tự) | Nhật | FixedSizeChunker (`fixed_size`, size=200, overlap=20) | 6 | 175.3 | Kém (cắt ngang quy định hủy ca sau 15 phút) |
+| | Tuấn | SentenceChunker (`by_sentences`, max=3) | 2 | 474.5 | Khá (giữ trọn vẹn câu điều kiện) |
+| | Khánh | RecursiveChunker (`recursive`, size=200) | 8 | 117.6 | Trung bình (chia nhỏ các điều kiện) |
+| | **Vĩ** | **HeadingChunker** (`heading_section`, size=400) | **4** | **238.0** | **Xuất sắc** (giữ trọn Điều kiện số người và Thời gian sử dụng) |
 
 ---
 
-### Chiến lược của từng thành viên
+### Chiến lược của từng thành viên (Phân công không trùng lặp)
 
-**Thành viên 1 — [Thành viên 1] (Data Lead)**
+**Thành viên 1 — Tuấn (Data Lead)**
 - **Loại chiến lược:** SentenceChunker (`by_sentences`, `max_sentences_per_chunk=3`)
 - **Mô tả & lý do chọn cho chủ đề này:** Tách văn bản dựa trên ranh giới ngữ pháp câu hoàn chỉnh. Các câu quy định thư viện luôn chứa cấu trúc điều kiện chặt chẽ ("Khi mượn tài liệu... sinh viên phải..."). Giữ trọn câu giúp không làm đứt đoạn nghĩa.
 - **Code snippet:**
@@ -99,7 +102,7 @@ class SentenceChunker:
         return chunks
 ```
 
-**Thành viên 2 — [Thành viên 2] (Benchmark Lead)**
+**Thành viên 2 — Khánh (Benchmark Lead)**
 - **Loại chiến lược:** RecursiveChunker (`recursive`, `chunk_size=300`)
 - **Mô tả & lý do chọn:** Phân đoạn đệ quy theo thứ tự `["\n\n", "\n", ". ", " ", ""]`. Ưu tiên bảo toàn các đoạn văn hoàn chỉnh hoặc các danh sách gạch đầu dòng, chỉ chia nhỏ khi vượt quá 300 ký tự và gộp các mảnh ngắn để kích thước đồng đều.
 - **Code snippet:**
@@ -146,7 +149,7 @@ class HeadingChunker:
         return chunks
 ```
 
-**Thành viên 4 — [Thành viên 4] (Report & Demo Lead)**
+**Thành viên 4 — Nhật (Report & Demo Lead)**
 - **Loại chiến lược:** Tuned FixedSizeChunker (`fixed_size`, `chunk_size=250`, `overlap=40`)
 - **Mô tả & lý do chọn:** Phương án so sánh đối chiếu có tối ưu overlap 40 ký tự nhằm kiểm tra xem việc cắt theo độ dài cố định có bị suy giảm chất lượng retrieval so với các chiến lược dựa trên cấu trúc hay không.
 
@@ -155,14 +158,15 @@ class HeadingChunker:
 ### So Sánh Giữa Các Thành Viên
 
 | Thành viên | Chiến lược (Strategy) | Điểm truy xuất (/10) | Điểm mạnh | Điểm yếu |
-|-----------|----------|----------------------|-----------|----------|
-| Thành viên 1 | `SentenceChunker` (max 3 câu) | 10/10 | Giữ câu ngữ pháp trọn vẹn, độ tương đồng câu cao. | Dễ gom nhầm 2 mục khác nhau nếu các câu quá ngắn. |
-| Thành viên 2 | `RecursiveChunker` (size 300) | 8/10 | Cân bằng kích thước tốt, tôn trọng cấu trúc đoạn văn `\n\n`. | Có thể cắt trúng giữa một danh sách điều kiện liệt kê. |
-| Thành viên 3 (Trần Chí Vĩ) | `HeadingChunker` (size 400) | 9/10 (hoặc 10/10) | **Tối ưu nhất**: Mỗi chunk là 1 Mục nghiệp vụ hoàn chỉnh, ngữ cảnh trọn vẹn 100%. | Phụ thuộc vào tài liệu có cấu trúc Markdown chuẩn (`#`, `##`). |
-| Thành viên 4 | `FixedSizeChunker` (250/40) | 8/10 | Đơn giản, độ dài đồng nhất, có overlap giảm đứt gãy từ. | Vẫn cắt ngang câu ngẫu nhiên theo số ký tự, nhiễu ranh giới ngữ nghĩa. |
+|---|---|---|---|---|
+| **Tuấn** | `SentenceChunker` (max 3 câu) | 7/10 | Giữ câu ngữ pháp trọn vẹn, độ tương đồng câu cao. | Dễ gom nhầm 2 mục khác nhau nếu các câu quá ngắn. |
+| **Khánh** | `RecursiveChunker` (size 300) | 8/10 | Cân bằng kích thước tốt, tôn trọng cấu trúc đoạn văn `\n\n`. | Có thể cắt trúng giữa một danh sách điều kiện liệt kê. |
+| **Vĩ (Trần Chí Vĩ)** | **`HeadingChunker`** (size 400) | **9/10** | **Tối ưu nhất**: Mỗi chunk là 1 Mục nghiệp vụ hoàn chỉnh, ngữ cảnh trọn vẹn 100%. | Phụ thuộc vào tài liệu có cấu trúc Markdown chuẩn (`#`, `##`). |
+| **Nhật** | `FixedSizeChunker` (250/40) | 8/10 | Đơn giản, độ dài đồng nhất, có overlap giảm đứt gãy từ. | Vẫn cắt ngang câu ngẫu nhiên theo số ký tự, nhiễu ranh giới ngữ nghĩa. |
 
 **Chiến lược nào tốt nhất cho chủ đề này? Tại sao?**
-> **Chiến lược `HeadingChunker` (của Thành viên 3) là tối ưu và phù hợp nhất** cho văn bản quy định thư viện. Lý do: mỗi điều khoản quy định (như hạn ngạch mượn, mức phí phạt, quy định hủy phòng học nhóm) được người soạn thảo đóng gói thành từng mục logic độc lập. `HeadingChunker` tôn trọng tuyệt đối ranh giới này, giúp các số liệu (10 tài liệu, 5.000 VNĐ, 2 giờ, 15 phút, 4 lượt) nằm trọn vẹn trong chunk, không bao giờ bị cắt rời khỏi tiêu đề điều khoản.
+> **Chiến lược `HeadingChunker` của Vĩ là tối ưu và phù hợp nhất** cho văn bản quy định thư viện. Lý do: mỗi điều khoản quy định (như hạn ngạch mượn, mức phí phạt, quy định hủy phòng học nhóm) được người soạn thảo đóng gói thành từng mục logic độc lập. `HeadingChunker` tôn trọng tuyệt đối ranh giới này, giúp các số liệu (10 tài liệu, 5.000 VNĐ, 2 giờ, 15 phút, 4 lượt) nằm trọn vẹn trong chunk, không bao giờ bị cắt rời khỏi tiêu đề điều khoản.
+
 
 ---
 
