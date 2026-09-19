@@ -1,22 +1,60 @@
-# Python
+# Byte-compiled / optimized / test caches
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
+*$py.class
+*.so
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
 
-# Environment
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment & Secrets (giữ lại .env.example)
 .env
 .env.local
+.env.*.local
+*.env
+!.env.example
+*.pem
+*.key
 
-# OS
+# Model & Vector Store Local Caches
+.hf-cache/
+.sentence-transformers/
+chroma_data/
+.cache/
+
+# OS specific files (macOS & Windows)
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
-# IDE
+# IDEs, Editors & Scratch
 .vscode/
 .idea/
 .omx/
-.venv/
-src_w_solution/
+*.swp
+*.swo
+*~
+scratch/
+tmp/
+*.log
 
-# Instructor-only notes (chứa gợi ý/đáp án chấm bài, không public cho học viên)
+# Instructor-only notes & solution code
+src_w_solution/
 docs/INSTRUCTOR_GUIDE.md
+
