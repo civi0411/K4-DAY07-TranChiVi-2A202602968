@@ -3,7 +3,7 @@
 **Họ tên:** Trần Chí Vĩ (TranChiVi)
 **MSSV:** 2A202602968
 **Repo GitHub:** https://github.com/civi0411/K4-DAY07-TranChiVi-2A202602968
-**Nhóm:** Nhóm L3A-Team01 (Chủ đề: Dịch vụ & Quy định Đại học)
+**Nhóm:** Nhóm 18 (Chủ đề: Dịch vụ & Nội quy Thư viện - University Library Services)
 **Ngày:** 19/09/2026
 
 > **Nộp 1 bản / sinh viên.** Phần nhóm (lựa chọn tài liệu, thiết kế chiến lược, bộ câu hỏi đánh giá, demo) nộp chung 1 bản trong `REPORT_NHOM.md`. Chi tiết thang điểm: `docs/SCORING.md`.

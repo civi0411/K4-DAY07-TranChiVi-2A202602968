@@ -1,6 +1,6 @@
-# Báo Cáo Nhóm — Lab 7: Embedding & Vector Store
+# Báo Cáo Nhóm — Lab 7: Embedding & Vector Store (Nhóm 18)
 
-**Nhóm:** Nhóm L3A-Team01 (Chủ đề: Dịch vụ & Quy định Đại học - Thư viện FPT)
+**Nhóm:** Nhóm 18 (Chủ đề: Dịch vụ & Nội quy Thư viện - University Library Services)
 **Thành viên:**
 1. Tuấn — Data Lead (Trưởng ban Dữ liệu)
 2. Khánh — Benchmark Lead (Trưởng ban Khảo thí)
@@ -58,24 +58,16 @@
 
 ## 2. Thiết kế chiến lược (Strategy Design) — Nhóm (15 điểm)
 
-### Phân tích đường cơ sở (Baseline Analysis)
+### Đánh giá chiến lược phân rã văn bản (Chunking Strategies)
 
-Vĩ (Strategy Lead) đã chạy `ChunkingStrategyComparator().compare()` kết hợp thuật toán `HeadingChunker` trên 3 tài liệu đại diện của Thư viện FPT và chuyển giao số liệu cho Nhật (Report Lead):
+Để tối ưu hóa Vector Store, nhóm đã tiến hành phân rã tài liệu bằng 4 chiến lược khác nhau. Dưới đây là bảng phân tích so sánh giữa các thành viên:
 
-| Tài liệu | Thành viên phụ trách | Chiến lược (Strategy) | Số lượng Chunk | Độ dài trung bình | Giữ được ngữ cảnh không? |
-|---|---|---|---|---|---|
-| `fpt-muon-sach-sinh-vien.md` (916 ký tự) | Nhật | FixedSizeChunker (`fixed_size`, size=200, overlap=20) | 5 | 199.2 | Kém (bị ngắt giữa cụm từ số ngày mượn sách tiếng Việt và ngoại văn) |
-| | Tuấn | SentenceChunker (`by_sentences`, max=3) | 4 | 227.8 | Khá (câu ngữ pháp nguyên vẹn, tách theo mục tốt) |
-| | Khánh | RecursiveChunker (`recursive`, size=200) | 7 | 129.3 | Trung bình (cắt theo ranh giới dòng, chunk hơi ngắn) |
-| | **Vĩ** | **HeadingChunker** (`heading_section`, size=400) | **4** | **229.0** | **Xuất sắc** (nguyên vẹn từng Mục điều khoản logic) |
-| `fpt-phi-thu-vien.md` (901 ký tự) | Nhật | FixedSizeChunker (`fixed_size`, size=200, overlap=20) | 5 | 196.2 | Kém (cắt đứt cụm từ "5.000 VNĐ / tài liệu / ngày") |
-| | Tuấn | SentenceChunker (`by_sentences`, max=3) | 2 | 449.0 | Tương đối (gộp chung cả mục phí phạt và cổng thanh toán FAP) |
-| | Khánh | RecursiveChunker (`recursive`, size=200) | 6 | 149.0 | Khá (tách các mục độc lập) |
-| | **Vĩ** | **HeadingChunker** (`heading_section`, size=400) | **4** | **225.2** | **Xuất sắc** (tách rành mạch Mục Phí phạt và Mục Cổng thanh toán) |
-| `fpt-phong-hoc-nhom.md` (952 ký tự) | Nhật | FixedSizeChunker (`fixed_size`, size=200, overlap=20) | 6 | 175.3 | Kém (cắt ngang quy định hủy ca sau 15 phút) |
-| | Tuấn | SentenceChunker (`by_sentences`, max=3) | 2 | 474.5 | Khá (giữ trọn vẹn câu điều kiện) |
-| | Khánh | RecursiveChunker (`recursive`, size=200) | 8 | 117.6 | Trung bình (chia nhỏ các điều kiện) |
-| | **Vĩ** | **HeadingChunker** (`heading_section`, size=400) | **4** | **238.0** | **Xuất sắc** (giữ trọn Điều kiện số người và Thời gian sử dụng) |
+| Thành viên phụ trách | Tên Chiến lược | Số lượng Chunk sinh ra | Điểm Benchmark | Đánh giá & Nhận xét sơ bộ |
+|---|---|:---:|:---:|---|
+| **Tuấn (Data)** | `SentenceChunker` | 48 | **6/10** | Cắt theo từng câu nên số lượng chunk sinh ra nhiều nhất. Tuy nhiên, ngữ cảnh bị vỡ vụn, thường xuyên làm mất từ khóa nối câu khiến điểm truy xuất thấp nhất. |
+| **Nhật (Report)** | `FixedSizeChunker` | 14 | **4/10** | Cắt cứng theo số lượng ký tự (150 char). Ưu điểm là rất ít chunk, nhưng nhược điểm là đoạn văn bị chẻ đôi giữa chừng một cách máy móc. Câu 4 và 5 bị cắt đứt đoạn chứa Keyword quan trọng nên lấy sai hoàn toàn. |
+| **Khánh (Benchmark)** | `RecursiveChunker` | 31 | **8/10** | Cắt đệ quy rất linh hoạt, dung hòa tốt giữa số lượng chunk và ngữ cảnh. Lấy được điểm tuyệt đối ở 4/5 câu hỏi. |
+| **Vĩ (Strategy)** | `HeadingChunker` | 32 | **9/10** | **Chiến lược xuất sắc nhất.** Tự động cắt theo các thẻ `#` và `##` của Markdown, giúp giữ trọn vẹn 100% ngữ cảnh của một "Điều luật" hay một "Quy định" vào chung một chunk. |
 
 ---
 
@@ -150,56 +142,70 @@ class HeadingChunker:
 ```
 
 **Thành viên 4 — Nhật (Report & Demo Lead)**
-- **Loại chiến lược:** Tuned FixedSizeChunker (`fixed_size`, `chunk_size=250`, `overlap=40`)
-- **Mô tả & lý do chọn:** Phương án so sánh đối chiếu có tối ưu overlap 40 ký tự nhằm kiểm tra xem việc cắt theo độ dài cố định có bị suy giảm chất lượng retrieval so với các chiến lược dựa trên cấu trúc hay không.
+- **Loại chiến lược:** FixedSizeChunker (`fixed_size`, `chunk_size=150`)
+- **Mô tả & lý do chọn:** Phương án so sánh đối chiếu cắt cứng theo số lượng ký tự (150 char) nhằm kiểm tra xem việc chia cắt máy móc có gây đứt gãy từ khóa hay không.
 
 ---
 
-### So Sánh Giữa Các Thành Viên
-
-| Thành viên | Chiến lược (Strategy) | Điểm truy xuất (/10) | Điểm mạnh | Điểm yếu |
-|---|---|---|---|---|
-| **Tuấn** | `SentenceChunker` (max 3 câu) | 7/10 | Giữ câu ngữ pháp trọn vẹn, độ tương đồng câu cao. | Dễ gom nhầm 2 mục khác nhau nếu các câu quá ngắn. |
-| **Khánh** | `RecursiveChunker` (size 300) | 8/10 | Cân bằng kích thước tốt, tôn trọng cấu trúc đoạn văn `\n\n`. | Có thể cắt trúng giữa một danh sách điều kiện liệt kê. |
-| **Vĩ (Trần Chí Vĩ)** | **`HeadingChunker`** (size 400) | **9/10** | **Tối ưu nhất**: Mỗi chunk là 1 Mục nghiệp vụ hoàn chỉnh, ngữ cảnh trọn vẹn 100%. | Phụ thuộc vào tài liệu có cấu trúc Markdown chuẩn (`#`, `##`). |
-| **Nhật** | `FixedSizeChunker` (250/40) | 8/10 | Đơn giản, độ dài đồng nhất, có overlap giảm đứt gãy từ. | Vẫn cắt ngang câu ngẫu nhiên theo số ký tự, nhiễu ranh giới ngữ nghĩa. |
-
-**Chiến lược nào tốt nhất cho chủ đề này? Tại sao?**
-> **Chiến lược `HeadingChunker` của Vĩ là tối ưu và phù hợp nhất** cho văn bản quy định thư viện. Lý do: mỗi điều khoản quy định (như hạn ngạch mượn, mức phí phạt, quy định hủy phòng học nhóm) được người soạn thảo đóng gói thành từng mục logic độc lập. `HeadingChunker` tôn trọng tuyệt đối ranh giới này, giúp các số liệu (10 tài liệu, 5.000 VNĐ, 2 giờ, 15 phút, 4 lượt) nằm trọn vẹn trong chunk, không bao giờ bị cắt rời khỏi tiêu đề điều khoản.
-
+### Chiến lược nào tốt nhất cho chủ đề này? Tại sao?
+> **Chiến lược `HeadingChunker` của Vĩ là xuất sắc và tối ưu nhất (9/10 điểm)** cho văn bản quy định thư viện. Lý do: mỗi điều khoản quy định (như hạn ngạch mượn, mức phí phạt, quy định hủy phòng học nhóm) được người soạn thảo đóng gói thành từng mục logic độc lập. `HeadingChunker` tôn trọng tuyệt đối ranh giới này, giúp các số liệu (10 tài liệu, 5.000 VNĐ, 2 giờ, 15 phút, 4 lượt) nằm trọn vẹn trong chunk, không bao giờ bị cắt rời khỏi tiêu đề điều khoản.
 
 ---
 
 ## 3. Câu hỏi đánh giá & Chất lượng truy xuất (Retrieval Quality) — Nhóm (10 điểm)
 
-### Câu hỏi đánh giá & Câu trả lời chuẩn (nhóm thống nhất)
+### Kết quả Benchmark (5 câu hỏi truy xuất)
 
-| # | Câu hỏi (Query) | Câu trả lời chuẩn (Gold Answer) | Chunk nào chứa thông tin? |
-|---|-------|-------------------------------|--------------------------|
-| 1 | Sinh viên được mượn tối đa bao nhiêu tài liệu về nhà và thời hạn mượn sách tham khảo tiếng Việt, ngoại văn là bao lâu? | Sinh viên được mượn tối đa 10 tài liệu cùng lúc về nhà; sách tiếng Việt mượn 7 ngày; sách ngoại văn và song ngữ mượn 14 ngày. | `fpt-muon-sach-sinh-vien.md` (Mục 1 & Mục 3) |
-| 2 | Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc? *(Bắt buộc: `audience="student"`)* | 10 tài liệu đối với sinh viên (nếu là cán bộ giảng viên thì được mượn tối đa 20 tài liệu). | `fpt-muon-sach-sinh-vien.md` (Mục 1) |
-| 3 | Mức phí phạt trả sách quá hạn mỗi ngày là bao nhiêu và có những phương thức thanh toán trực tuyến nào? | Phí phạt quá hạn là 5.000 VNĐ / tài liệu / ngày; có 2 phương thức thanh toán trực tuyến: qua ví FAP và qua cổng DNG (quét mã QR ngân hàng). | `fpt-phi-thu-vien.md` (Mục 1 & Mục 2) |
-| 4 | Thời gian sử dụng phòng học nhóm tối đa là bao lâu mỗi ca và sau bao nhiêu phút không đến nhận phòng thì ca đặt sẽ bị hủy? | Thời gian sử dụng tối đa 2 giờ / ca (1 ca / nhóm / ngày); sau 15 phút kể từ giờ bắt đầu nếu nhóm không đến nhận phòng hoặc không đủ người tối thiểu thì ca đặt sẽ tự động bị hủy. | `fpt-phong-hoc-nhom.md` (Mục 2) |
-| 5 | Mỗi cuốn sách được phép gia hạn tối đa mấy lượt và bạn đọc có thể thực hiện gia hạn qua những kênh nào? | Mỗi cuốn sách được phép gia hạn tối đa 4 lượt (nếu chưa có người đặt trước); gia hạn qua 4 kênh: cổng OPAC trực tuyến, gửi email, gọi điện thoại (024 6680 5912), hoặc nhắn tin qua Fanpage Thư viện FPTU. | `fpt-gia-han-tai-lieu.md` (Mục 1 & Mục 2) |
+Nhóm sử dụng bộ 5 câu hỏi chuẩn để test hệ thống. Điểm số dưới đây lấy từ chiến lược tốt nhất (`HeadingChunker` của Vĩ):
+
+* **Câu 1 (Fact & Numbers):** *"Sinh viên được mượn tối đa bao nhiêu tài liệu về nhà và thời hạn mượn sách tham khảo tiếng Việt, ngoại văn là bao lâu?"*
+  * **Đáp án chuẩn:** Sinh viên được mượn tối đa 10 tài liệu cùng lúc về nhà; sách tiếng Việt mượn 7 ngày; sách ngoại văn và song ngữ mượn 14 ngày.
+  * **Kết quả:** Đạt **1/2 điểm**. (Hệ thống lấy đúng ý nhưng top-1 bị nhầm lẫn nhẹ sang quy định của giảng viên do không có filter).
+* **Câu 2 (Conditions):** *"Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc?"*
+  * **Đáp án chuẩn:** 10 tài liệu đối với sinh viên (nếu là cán bộ giảng viên thì được mượn tối đa 20 tài liệu).
+  * **Kết quả:** Đạt **2/2 điểm** tuyệt đối nhờ sử dụng Metadata Filter `{"audience": "student"}`.
+* **Câu 3 (Finance):** *"Mức phí phạt trả sách quá hạn mỗi ngày là bao nhiêu và có những phương thức thanh toán trực tuyến nào?"*
+  * **Đáp án chuẩn:** Phí phạt quá hạn là 5.000 VNĐ / tài liệu / ngày; có 2 phương thức thanh toán trực tuyến: qua ví FAP và qua cổng DNG.
+  * **Kết quả:** Đạt **2/2 điểm**. Bốc chính xác `fpt-phi-thu-vien`.
+* **Câu 4 (Facility):** *"Thời gian sử dụng phòng học nhóm tối đa là bao lâu mỗi ca và sau bao nhiêu phút không đến nhận phòng thì ca đặt sẽ bị hủy?"*
+  * **Đáp án chuẩn:** Thời gian sử dụng tối đa 2 giờ / ca; sau 15 phút nếu nhóm không đến nhận phòng thì ca đặt sẽ tự động bị hủy.
+  * **Kết quả:** Đạt **2/2 điểm**. Trích xuất đúng con số `2 giờ` và `15 phút`.
+* **Câu 5 (Channels):** *"Mỗi cuốn sách được phép gia hạn tối đa mấy lượt và bạn đọc có thể thực hiện gia hạn qua những kênh nào?"*
+  * **Đáp án chuẩn:** Mỗi cuốn sách được phép gia hạn tối đa 4 lượt; gia hạn qua 4 kênh: OPAC, email, 024 6680 5912, Fanpage.
+  * **Kết quả:** Đạt **2/2 điểm**.
+
+👉 **Tổng điểm hệ thống: 9/10 điểm.**
 
 ---
 
-### Tổng hợp chất lượng truy xuất của nhóm
+### Bằng chứng thực nghiệm A/B: Metadata Filtering
+*(Chứng minh sự cần thiết của lọc siêu dữ liệu trong kiến trúc Multi-tenant)*
 
-| # | Câu hỏi | Chiến lược tốt nhất cho câu này | Có chunk liên quan trong top-3? | Ghi chú |
-|---|---------|-------------------------------|-------------------------------|---------|
-| 1 | Hạn ngạch & thời hạn mượn sách SV | `HeadingChunker` / `SentenceChunker` | Có (Top-1) | Trả về chính xác 10 cuốn, 7 ngày tiếng Việt, 14 ngày ngoại văn. |
-| 2 | Hạn ngạch mượn tối đa *(có filter)* | `HeadingChunker` (với filter `student`) | Có (Top-1) | **Bắt buộc có filter**: Lọc bỏ hoàn toàn tài liệu giảng viên (20 cuốn). |
-| 3 | Phí phạt quá hạn & thanh toán FAP/DNG | `HeadingChunker` | Có (Top-1) | Trích xuất chuẩn xác 5.000 VNĐ, ví FAP và cổng DNG. |
-| 4 | Phòng học nhóm (2 giờ, hủy sau 15p) | `HeadingChunker` | Có (Top-1) | Trả về chuẩn xác ca 2 giờ và mốc 15 phút tự động hủy. |
-| 5 | Lượt gia hạn & 4 kênh liên hệ | `HeadingChunker` / `SentenceChunker` | Có (Top-1) | Trích xuất đầy đủ 4 lượt gia hạn, OPAC, 024 6680 5912, Fanpage. |
+**Câu hỏi Test:** *"Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc?"*
 
-**Lọc bằng metadata có giúp ích không? Ở câu hỏi nào?**
-> **Metadata filtering mang tính sống còn ở Câu hỏi 2.**
-> Khi đặt câu hỏi mơ hồ: *"Hạn ngạch được phép mượn tài liệu về nhà tối đa là bao nhiêu cuốn cùng một lúc?"*, trong cơ sở tri thức có 2 tài liệu cùng chủ đề:
-> - Sinh viên (`fpt-muon-sach-sinh-vien.md`): 10 cuốn.
-> - Giảng viên (`fpt-muon-sach-giang-vien.md`): 20 cuốn.
-> Nếu **không lọc**, tài liệu của giảng viên xuất hiện ngay trong top-3 (score=0.299), khiến agent dễ trả lời nhầm hạn ngạch 20 cuốn cho sinh viên. Khi bật `metadata_filter={"audience": "student"}`, toàn bộ tài liệu giảng viên bị loại bỏ ngay từ bước tiền lọc, đảm bảo câu trả lời luôn trích xuất chính xác con số 10 cuốn dành cho sinh viên.
+* **TRƯỜNG HỢP 1: KHÔNG SỬ DỤNG FILTER**
+  * Vector Store lấy về cả tài liệu `fpt-muon-sach-sinh-vien` (10 cuốn) và `fpt-muon-sach-giang-vien` (20 cuốn).
+  * Tài liệu của giảng viên nằm chễm chệ ở Rank 2 với score khá cao (0.275). Nếu đưa kết quả này cho LLM, chắc chắn LLM sẽ bị ảo giác (hallucination) và trả lời sai thành 20 cuốn.
+* **TRƯỜNG HỢP 2: CÓ SỬ DỤNG FILTER `{"audience": "student"}`**
+  * Vector Store loại bỏ hoàn toàn tài liệu của giảng viên từ trước khi tính toán cosine similarity (Pre-filtering).
+  * Hệ thống cô lập 100% dữ liệu, lấy về đúng tài liệu sinh viên (Score: 0.395).
+
+**💡 Kết luận:** Bắt buộc phải triển khai tính năng Metadata Filtering để đảm bảo an toàn thông tin và tính chính xác, không cho phép sinh viên đọc chéo quy định của giảng viên.
+
+---
+
+### Phân tích lỗi (Failure Case Analysis)
+
+Nhóm đã phát hiện một rủi ro kiến trúc vô cùng lớn khi sử dụng `SentenceChunker` (Thuật toán của Tuấn).
+
+**1. Hiện tượng lỗi:**
+Khi hỏi Câu 3: *"Mức phí phạt trả sách quá hạn mỗi ngày là bao nhiêu?"*, chiến lược `SentenceChunker` đạt 0/2 điểm. Top-1 truy xuất trả về một câu hoàn toàn không liên quan: *"Tài khoản thư viện của bạn đọc không trong tình trạng bị khóa hoặc vi phạm nội quy."*
+
+**2. Nguyên nhân (Root Cause):**
+Do thuật toán `SentenceChunker` băm văn bản quá nhuyễn (cắt theo từng dấu chấm câu). Câu văn chứa con số "5.000 VNĐ" bị tách rời hoàn toàn khỏi câu văn chứa chữ "Mức phí phạt quá hạn". Khi Vector Store tính khoảng cách ngữ nghĩa, từng câu đơn lẻ không đủ từ khóa ngữ cảnh, dẫn đến Vector bị lạc hướng và nhặt sai tài liệu.
+
+**3. Giải pháp khắc phục:**
+Tuyệt đối không dùng `SentenceChunker` cho các tài liệu dạng Pháp luật / Nội quy vì nó phá vỡ tính liên kết của một "Điều khoản". Phải sử dụng `HeadingChunker` (Giữ nguyên văn bản từ thẻ Header này đến thẻ Header tiếp theo) để gom trọn vẹn ngữ cảnh vào một Vector duy nhất.
 
 ---
 
@@ -209,9 +215,6 @@ class HeadingChunker:
 1. **Kiến trúc dữ liệu quyết định chất lượng RAG:** Cấu trúc tài liệu (Domain-specific Heading Chunking) vượt trội hơn chia nhỏ ngẫu nhiên theo ký tự. Với văn bản quy định, mỗi Mục là một đơn vị ý nghĩa khép kín.
 2. **Sức mạnh của Tiền lọc Metadata (Pre-filtering):** Phân chia rõ `audience` giúp giải quyết triệt để vấn đề xung đột hạn ngạch giữa sinh viên (10 cuốn) và giảng viên (20 cuốn).
 3. **Thực nghiệm A/B trực quan:** Demo trực tiếp tại quầy phản biện: so sánh câu hỏi 2 khi bật và tắt filter để giảng viên thấy rõ sự khác biệt trong kết quả top-k.
-
-**Bài học rút ra khi so sánh trong nhóm:**
-> Cùng bộ dữ liệu Thư viện FPT, chiến lược FixedSize bị cắt cụm từ quan trọng (5.000 VNĐ, 15 phút); SentenceChunker an toàn về ngữ pháp nhưng đôi khi gộp 2 mục khác nhau; HeadingChunker là giải pháp hoàn hảo nhất cho văn bản có cấu trúc quy chế.
 
 **Nếu làm lại, nhóm sẽ thay đổi gì trong chiến lược dữ liệu (data strategy)?**
 > Nhóm sẽ ứng dụng thêm cơ chế **Contextual Chunk Headers** (tự động đính kèm tên tài liệu và breadcrumb vào đầu từng chunk) và kết hợp **Hybrid Search** (kết hợp BM25 cho từ khóa chính xác như số điện thoại, tên cổng DNG với vector embedding).
@@ -227,3 +230,4 @@ class HeadingChunker:
 | Chất lượng truy xuất (Retrieval Quality) | 10 / 10 |
 | Thuyết trình (Demo) | 5 / 5 |
 | **Tổng phần nhóm** | **40 / 40** |
+
