@@ -1,0 +1,8 @@
+doc_id,file_path,title,source_url,retrieved_at,document_version,license_or_permission
+dang-ky-hoc-phan,data/university/dang-ky-hoc-phan.md,Quy định đăng ký và rút học phần,https://vlearn.edu.vn/quy-dinh/dang-ky-hoc-phan,2026-09-18,2026.1,public-source
+hoc-phi-va-mien-giam,data/university/hoc-phi-va-mien-giam.md,Quy định thu nộp học phí và chính sách miễn giảm,https://vlearn.edu.vn/tai-chinh/hoc-phi-mien-giam,2026-09-18,2026.1,public-source
+hoc-bong-khuyen-khich,data/university/hoc-bong-khuyen-khich.md,Quy chế xét cấp học bổng khuyến khích học tập,https://vlearn.edu.vn/cong-tac-sinh-vien/hoc-bong-khuyen-khich,2026-09-18,2026.2,public-source
+muon-tra-thu-vien-sinh-vien,data/university/muon-tra-thu-vien-sinh-vien.md,Quy định mượn trả tài liệu thư viện dành cho sinh viên,https://vlearn.edu.vn/thu-vien/quy-dinh-sinh-vien,2026-09-18,2026.1,public-source
+muon-tra-thu-vien-giang-vien,data/university/muon-tra-thu-vien-giang-vien.md,Quy định mượn trả tài liệu thư viện dành cho cán bộ giảng viên,https://vlearn.edu.vn/thu-vien/quy-dinh-giang-vien,2026-09-18,2026.1,public-source
+ky-tuc-xa-sinh-vien,data/university/ky-tuc-xa-sinh-vien.md,Quy chế quản lý nội trú ký túc xá sinh viên,https://vlearn.edu.vn/ky-tuc-xa/quy-che-noi-tru,2026-09-18,2026.1,public-source
+phuc-khao-diem-thi,data/university/phuc-khao-diem-thi.md,Quy trình phúc khảo điểm thi kết thúc học phần,https://vlearn.edu.vn/khao-thi/quy-trinh-phuc-khao,2026-09-18,2026.1,public-source

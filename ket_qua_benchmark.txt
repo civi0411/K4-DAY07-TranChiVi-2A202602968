@@ -1,0 +1,142 @@
+================================================================================
+                     KẾT QUẢ BENCHMARK RETRIEVAL LAB 07 (L3A)                  
+================================================================================
+
+Chiến lược                       | Số Chunks  | Điểm (/10) | Đánh giá
+---------------------------------------------------------------------------
+Member 1: SentenceChunker        | 20         | 2/10       | Trung bình
+Member 2: RecursiveChunker       | 33         | 0/10       | Trung bình
+Member 3: HeadingChunker         | 28         | 0/10       | Trung bình
+Baseline: FixedSizeChunker       | 35         | 2/10       | Trung bình
+
+================================================================================
+
+### CHI TIẾT CHIẾN LƯỢC: Member 1: SentenceChunker (Tổng chunks: 20)
+  Câu 1: Sinh viên có học lực bình thường phải đăng ký tối thiểu bao nhiêu tín chỉ và rút học phần trước tuần thứ mấy?
+    - Filter: None
+    - Top-1 Doc: hoc-bong-khuyen-khich (score=0.380)
+    - Content preview: 2. Không có điểm học phần nào dưới điểm C (tương đương dưới 2.0/4.0). 3....
+    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+  Câu 2: Thời hạn đóng học phí học kỳ là khi nào và đối tượng nào được miễn 100% học phí?
+    - Filter: None
+    - Top-1 Doc: muon-tra-thu-vien-giang-vien (score=0.262)
+    - Content preview: Giảng viên được cấp mã định danh truy cập vào các cơ sở dữ liệu học thuật quốc tế (IEEE, Scopus, ScienceDirect) có bản q...
+    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+  Câu 3: Điều kiện về GPA và điểm rèn luyện để đạt học bổng khuyến khích loại Xuất sắc là gì?
+    - Filter: None
+    - Top-1 Doc: hoc-bong-khuyen-khich (score=0.205)
+    - Content preview: Không bị kỷ luật từ hình thức khiển trách trở lên trong kỳ học. ## Điều 2 — Các định mức phân loại học bổng Quỹ học bổng...
+    - Gold in top-3: True | Content matched: True | Điểm: 2/2
+  Câu 4: Thời hạn mượn sách thư viện tối đa là bao nhiêu ngày và được mượn cùng lúc bao nhiêu cuốn?
+    - Filter: {'audience': 'student'}
+    - Top-1 Doc: hoc-phi-va-mien-giam (score=0.215)
+    - Content preview: # Quy định thu nộp học phí và chính sách miễn giảm  ## Điều 1 — Thời hạn nộp học phí học kỳ Sinh viên có trách nhiệm hoà...
+    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+  Câu 5: Thủ tục và lệ phí xin phúc khảo bài thi kết thúc học phần như thế nào, trường hợp nào được hoàn tiền?
+    - Filter: None
+    - Top-1 Doc: hoc-phi-va-mien-giam (score=0.208)
+    - Content preview: ## Điều 3 — Chính sách miễn giảm học phí Nhà trường thực hiện chính sách hỗ trợ tài chính cho sinh viên: 1. Miễn 100% họ...
+    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+--------------------------------------------------------------------------------
+### CHI TIẾT CHIẾN LƯỢC: Member 2: RecursiveChunker (Tổng chunks: 33)
+  Câu 1: Sinh viên có học lực bình thường phải đăng ký tối thiểu bao nhiêu tín chỉ và rút học phần trước tuần thứ mấy?
+    - Filter: None
+    - Top-1 Doc: muon-tra-thu-vien-giang-vien (score=0.228)
+    - Content preview: # Quy định mượn trả tài liệu thư viện dành cho cán bộ giảng viên  ## Điều 1 — Hạn mức và thời hạn mượn phục vụ nghiên cứ...
+    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+  Câu 2: Thời hạn đóng học phí học kỳ là khi nào và đối tượng nào được miễn 100% học phí?
+    - Filter: None
+    - Top-1 Doc: muon-tra-thu-vien-giang-vien (score=0.165)
+    - Content preview: ## Điều 3 — Sử dụng phòng nghiên cứu chuyên biệt Giảng viên có đề tài nghiên cứu cấp trường trở lên được đăng ký sử dụng...
+    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+  Câu 3: Điều kiện về GPA và điểm rèn luyện để đạt học bổng khuyến khích loại Xuất sắc là gì?
+    - Filter: None
+    - Top-1 Doc: hoc-phi-va-mien-giam (score=0.200)
+    - Content preview: ## Điều 3 — Chính sách miễn giảm học phí Nhà trường thực hiện chính sách hỗ trợ tài chính cho sinh viên: 1. Miễn 100% họ...
+    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+  Câu 4: Thời hạn mượn sách thư viện tối đa là bao nhiêu ngày và được mượn cùng lúc bao nhiêu cuốn?
+    - Filter: {'audience': 'student'}
+    - Top-1 Doc: hoc-phi-va-mien-giam (score=0.199)
+    - Content preview: 2. Giảm 50% học phí đối với sinh viên là con đẻ của thương binh, bệnh binh, người có công với cách mạng. Hồ sơ đề nghị m...
+    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+  Câu 5: Thủ tục và lệ phí xin phúc khảo bài thi kết thúc học phần như thế nào, trường hợp nào được hoàn tiền?
+    - Filter: None
+    - Top-1 Doc: muon-tra-thu-vien-sinh-vien (score=0.232)
+    - Content preview: Sinh viên hệ chính quy được mượn về nhà tối đa 5 cuốn sách giáo trình hoặc tài liệu tham khảo trong cùng một thời điểm. ...
+    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+--------------------------------------------------------------------------------
+### CHI TIẾT CHIẾN LƯỢC: Member 3: HeadingChunker (Tổng chunks: 28)
+  Câu 1: Sinh viên có học lực bình thường phải đăng ký tối thiểu bao nhiêu tín chỉ và rút học phần trước tuần thứ mấy?
+    - Filter: None
+    - Top-1 Doc: ky-tuc-xa-sinh-vien (score=0.209)
+    - Content preview: ## Điều 3 — Quy định về an toàn phòng chống cháy nổ Sinh viên nội trú tuyệt đối không được sử dụng bếp gas, bếp than hoặ...
+    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+  Câu 2: Thời hạn đóng học phí học kỳ là khi nào và đối tượng nào được miễn 100% học phí?
+    - Filter: None
+    - Top-1 Doc: hoc-bong-khuyen-khich (score=0.198)
+    - Content preview: ## Điều 2 — Các định mức phân loại học bổng - Học bổng loại Khá: GPA đạt từ 2.80 đến 3.19 và DRL đạt từ 70 điểm trở lên....
+    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+  Câu 3: Điều kiện về GPA và điểm rèn luyện để đạt học bổng khuyến khích loại Xuất sắc là gì?
+    - Filter: None
+    - Top-1 Doc: dang-ky-hoc-phan (score=0.241)
+    - Content preview: ## Điều 2 — Thời hạn và quy trình rút học phần Sinh viên được phép xin rút học phần trước khi kết thúc tuần thứ 4 của họ...
+    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+  Câu 4: Thời hạn mượn sách thư viện tối đa là bao nhiêu ngày và được mượn cùng lúc bao nhiêu cuốn?
+    - Filter: {'audience': 'student'}
+    - Top-1 Doc: hoc-bong-khuyen-khich (score=0.278)
+    - Content preview: ## Điều 1 — Tiêu chuẩn chung xét học bổng Học bổng khuyến khích học tập được xét và trao theo từng học kỳ cho sinh viên ...
+    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+  Câu 5: Thủ tục và lệ phí xin phúc khảo bài thi kết thúc học phần như thế nào, trường hợp nào được hoàn tiền?
+    - Filter: None
+    - Top-1 Doc: dang-ky-hoc-phan (score=0.306)
+    - Content preview: ## Điều 2 — Thời hạn và quy trình rút học phần Sinh viên được phép xin rút học phần trước khi kết thúc tuần thứ 4 của họ...
+    - Gold in top-3: False | Content matched: False | Điểm: 0/2
+--------------------------------------------------------------------------------
+### CHI TIẾT CHIẾN LƯỢC: Baseline: FixedSizeChunker (Tổng chunks: 35)
+  Câu 1: Sinh viên có học lực bình thường phải đăng ký tối thiểu bao nhiêu tín chỉ và rút học phần trước tuần thứ mấy?
+    - Filter: None
+    - Top-1 Doc: hoc-phi-va-mien-giam (score=0.272)
+    - Content preview:  sách miễn giảm học phí Nhà trường thực hiện chính sách hỗ trợ tài chính cho sinh viên: 1. Miễn 100% học phí đối với sin...
+    - Gold in top-3: True | Content matched: False | Điểm: 0/2
+  Câu 2: Thời hạn đóng học phí học kỳ là khi nào và đối tượng nào được miễn 100% học phí?
+    - Filter: None
+    - Top-1 Doc: phuc-khao-diem-thi (score=0.226)
+    - Content preview: # Quy trình phúc khảo điểm thi kết thúc học phần  ## Điều 1 — Thời hạn tiếp nhận đơn đề nghị phúc khảo Sinh viên có thắc...
+    - Gold in top-3: True | Content matched: False | Điểm: 1/2
+  Câu 3: Điều kiện về GPA và điểm rèn luyện để đạt học bổng khuyến khích loại Xuất sắc là gì?
+    - Filter: None
+    - Top-1 Doc: ky-tuc-xa-sinh-vien (score=0.244)
+    - Content preview: ở cửa trở lại vào lúc 05h00 sáng ngày hôm sau. Sinh viên về sau 23h00 phải xuất trình thẻ sinh viên, ghi nhận thông tin ...
+    - Gold in top-3: True | Content matched: False | Điểm: 0/2
+  Câu 4: Thời hạn mượn sách thư viện tối đa là bao nhiêu ngày và được mượn cùng lúc bao nhiêu cuốn?
+    - Filter: {'audience': 'student'}
+    - Top-1 Doc: muon-tra-thu-vien-sinh-vien (score=0.393)
+    - Content preview:  quá hạn và bồi thường tài liệu Tài liệu trả trễ hạn sẽ chịu phí phạt quá hạn là 2.000 đồng/cuốn/ngày. Trường hợp sinh v...
+    - Gold in top-3: True | Content matched: False | Điểm: 0/2
+  Câu 5: Thủ tục và lệ phí xin phúc khảo bài thi kết thúc học phần như thế nào, trường hợp nào được hoàn tiền?
+    - Filter: None
+    - Top-1 Doc: hoc-phi-va-mien-giam (score=0.216)
+    - Content preview:  sách miễn giảm học phí Nhà trường thực hiện chính sách hỗ trợ tài chính cho sinh viên: 1. Miễn 100% học phí đối với sin...
+    - Gold in top-3: True | Content matched: False | Điểm: 1/2
+--------------------------------------------------------------------------------
+
+### BẰNG CHỨNG THỰC NGHIỆM A/B: METADATA FILTERING TRÊN CÂU HỎI 4
+Câu hỏi: Thời hạn mượn sách thư viện tối đa là bao nhiêu ngày và được mượn cùng lúc bao nhiêu cuốn?
+
+[1] KHI CÓ FILTER (metadata_filter={'audience': 'student'}):
+  Rank 1: doc_id=hoc-bong-khuyen-khich, audience=student, score=0.278
+         Preview: ## Điều 1 — Tiêu chuẩn chung xét học bổng Học bổng khuyến khích học tập được xét và trao theo từng h...
+  Rank 2: doc_id=hoc-bong-khuyen-khich, audience=student, score=0.160
+         Preview: # Quy chế xét cấp học bổng khuyến khích học tập...
+  Rank 3: doc_id=phuc-khao-diem-thi, audience=student, score=0.124
+         Preview: ## Điều 1 — Thời hạn tiếp nhận đơn đề nghị phúc khảo Sinh viên có thắc mắc về điểm thi kết thúc học ...
+
+[2] KHI KHÔNG CÓ FILTER (Unfiltered):
+  Rank 1: doc_id=hoc-bong-khuyen-khich, audience=student, score=0.278
+         Preview: ## Điều 1 — Tiêu chuẩn chung xét học bổng Học bổng khuyến khích học tập được xét và trao theo từng h...
+  Rank 2: doc_id=hoc-bong-khuyen-khich, audience=student, score=0.160
+         Preview: # Quy chế xét cấp học bổng khuyến khích học tập...
+  Rank 3: doc_id=phuc-khao-diem-thi, audience=student, score=0.124
+         Preview: ## Điều 1 — Thời hạn tiếp nhận đơn đề nghị phúc khảo Sinh viên có thắc mắc về điểm thi kết thúc học ...
+
+Kết luận A/B: Filter audience=student loại trừ triệt để tài liệu giảng viên (120 ngày, 20 cuốn), bảo đảm kết quả trả về chính xác hạn mức sinh viên (14 ngày, 5 cuốn).
